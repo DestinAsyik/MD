@@ -1,4 +1,4 @@
-package com.id.destinasyik.ui
+package com.id.destinasyik.ui.home
 
 import android.os.Bundle
 import android.text.Editable
