@@ -1,5 +1,6 @@
 package com.id.destinasyik.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import com.id.destinasyik.R
 import com.id.destinasyik.data.repository.PlaceRepository
 import com.id.destinasyik.databinding.FragmentHomeBinding
 import com.id.destinasyik.ui.liked.PeopleLikedAdapter
+import com.id.destinasyik.ui.login.LoginActivity
 import com.id.destinasyik.ui.recomended.RecommendedAdapter
 
 class HomeFragment : Fragment() {
@@ -38,6 +40,14 @@ class HomeFragment : Fragment() {
         setupPeopleLikedRecyclerView()
         loadData()
         setupSearch()
+        setupProfileClickListener()
+    }
+
+    private fun setupProfileClickListener() {
+        binding.profileLayout.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecommendedRecyclerView() {
