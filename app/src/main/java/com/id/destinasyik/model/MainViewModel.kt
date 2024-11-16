@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,7 +17,7 @@ class MainViewModel : ViewModel() {
     private val _login = MutableLiveData<LoginResponse>()
     val login: LiveData<LoginResponse> = _login
 
-    private fun login(username: String, password: String){
+    fun loginAuth(username: String, password: String){
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("password", password)
@@ -30,11 +32,10 @@ class MainViewModel : ViewModel() {
                     Log.e("Login Auth", "onFailure: ${response.message()}")
                 }
             }
-
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("Login Auth", "onFailure: ${t.message.toString()}")
             }
-
         })
+
     }
 }

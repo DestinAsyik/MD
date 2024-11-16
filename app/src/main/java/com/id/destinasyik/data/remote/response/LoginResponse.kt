@@ -1,18 +1,42 @@
 package com.id.destinasyik.data.remote.response
 
+import com.google.gson.annotations.SerializedName
+
 data class LoginResponse(
-    val message: String,
-    val user: UserData,
-    val token: String
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+	@field:SerializedName("user")
+	val user: User? = null,
+
+	@field:SerializedName("token")
+	val token: String? = null
 )
 
-data class UserData(
-    val user_id: Int,
-    val username: String,
-    val name: String,
-    val password: String,
-    val age: Int,
-    val email: String,
-    val city: String,
-    val prefered_category: String
+data class User(
+
+	@field:SerializedName("password")
+	val password: String? = null,
+
+	@field:SerializedName("user_id")
+	val userId: Int? = null,
+
+	@field:SerializedName("city")
+	val city: String? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
+
+	@field:SerializedName("prefered_category")
+	val preferedCategory: String? = null,
+
+	@field:SerializedName("age")
+	val age: Int? = null,
+
+	@field:SerializedName("email")
+	val email: String? = null,
+
+	@field:SerializedName("username")
+	val username: String? = null
 )
