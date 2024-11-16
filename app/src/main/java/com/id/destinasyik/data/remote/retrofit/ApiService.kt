@@ -10,7 +10,12 @@ import retrofit2.http.Query
 
 interface ApiService {
     @POST("auth/login")
-    fun login(
+    fun loginUser(
+        @Body jsonObject: JsonObject
+    ): Call<LoginResponse>
+
+    @POST("auth/register")
+    fun registerUser(
         @Body jsonObject: JsonObject
     ): Call<LoginResponse>
 }

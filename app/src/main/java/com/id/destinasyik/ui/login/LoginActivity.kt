@@ -43,23 +43,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Failed to Login", Toast.LENGTH_SHORT).show()
             }
         })
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val user = authenticateUser(username, password)
-//                withContext(Dispatchers.Main) {
-//                    // Store the user data and token in the app's session
-//                    saveUserSession(user)
-//                    Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-//                    // Navigate to the next screen
-//                    navigateToMainScreen()
-//                }
-//            } catch (e: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
     }
 
     private suspend fun authenticateUser(username: String, password: String): LoginResponse {
