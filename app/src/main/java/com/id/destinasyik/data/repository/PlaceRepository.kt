@@ -1,7 +1,7 @@
 package com.id.destinasyik.data.repository
 
-import com.id.destinasyik.data.mock.LikedPlace
-import com.id.destinasyik.data.mock.Place
+import com.id.destinasyik.data.local.mock.LikedPlace
+import com.id.destinasyik.data.local.mock.Place
 
 class PlaceRepository {
     fun getRecommendedPlaces(): List<Place> = Place.createSampleList()

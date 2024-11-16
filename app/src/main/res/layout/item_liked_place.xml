@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:minWidth="80dp"
-            android:minHeight="40dp"/>
+            android:minHeight="40dp"
+            />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

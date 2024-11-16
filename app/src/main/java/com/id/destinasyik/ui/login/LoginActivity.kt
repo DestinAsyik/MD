@@ -1,17 +1,22 @@
 package com.id.destinasyik.ui.login
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
-import com.id.destinasyik.data.retrofit.LoginResponse
+import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
+import com.id.destinasyik.model.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.*
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
@@ -21,30 +26,40 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.button3.setOnClickListener { login() }
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        binding.button3.setOnClickListener { login(viewModel) }
     }
 
-    private fun login() {
+    private fun login(viewModel: MainViewModel) {
         val username = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val user = authenticateUser(username, password)
-                withContext(Dispatchers.Main) {
-                    // Store the user data and token in the app's session
-                    saveUserSession(user)
-                    Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                    // Navigate to the next screen
-                    navigateToMainScreen()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
-                }
+        viewModel.loginAuth(username,password)
+        viewModel.login.observe(this, Observer { response ->
+            if(response!=null){
+                saveUserSession(response)
+                Log.d("AUTH TOKEN","${response.token}")
+                Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this@LoginActivity, "Failed to Login", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            try {
+//                val user = authenticateUser(username, password)
+//                withContext(Dispatchers.Main) {
+//                    // Store the user data and token in the app's session
+//                    saveUserSession(user)
+//                    Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
+//                    // Navigate to the next screen
+//                    navigateToMainScreen()
+//                }
+//            } catch (e: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
     }
 
     private suspend fun authenticateUser(username: String, password: String): LoginResponse {

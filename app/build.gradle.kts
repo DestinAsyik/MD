@@ -51,4 +51,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.okhttp)
     implementation(libs.gson)
+    implementation (libs.retrofit)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.logging.interceptor)
+    implementation (libs.converter.gson)
 }
