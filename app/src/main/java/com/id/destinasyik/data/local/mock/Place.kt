@@ -1,4 +1,4 @@
-package com.id.destinasyik.data.mock
+package com.id.destinasyik.data.local.mock
 
 import com.id.destinasyik.R
 import java.util.UUID

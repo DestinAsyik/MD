@@ -1,17 +1,18 @@
 package com.id.destinasyik.ui.login
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.id.destinasyik.data.retrofit.LoginResponse
+import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.*
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {

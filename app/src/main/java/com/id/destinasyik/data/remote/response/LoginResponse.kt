@@ -1,4 +1,4 @@
-package com.id.destinasyik.data.retrofit
+package com.id.destinasyik.data.remote.response
 
 data class LoginResponse(
     val message: String,

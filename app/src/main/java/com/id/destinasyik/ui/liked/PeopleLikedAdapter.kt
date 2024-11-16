@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.id.destinasyik.R
-import com.id.destinasyik.data.mock.LikedPlace
+import com.id.destinasyik.data.local.mock.LikedPlace
 
 class PeopleLikedAdapter(private val maxItems: Int) : RecyclerView.Adapter<PeopleLikedAdapter.LikedPlaceViewHolder>() {
     private var places = listOf<LikedPlace>()

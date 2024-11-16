@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.id.destinasyik.R
-import com.id.destinasyik.data.mock.Place
+import com.id.destinasyik.data.local.mock.Place
 
 class RecommendedAdapter : ListAdapter<Place, RecommendedAdapter.PlaceViewHolder>(PlaceDiffCallback()) {
 

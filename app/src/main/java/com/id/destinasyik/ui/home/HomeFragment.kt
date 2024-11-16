@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.id.destinasyik.R
 import com.id.destinasyik.data.repository.PlaceRepository
 import com.id.destinasyik.databinding.FragmentHomeBinding
+import com.id.destinasyik.ui.recomended.CategoryPlaceFragment
+import com.id.destinasyik.ui.recomended.NearestPlaceFragment
 import com.id.destinasyik.ui.liked.PeopleLikedAdapter
 import com.id.destinasyik.ui.login.LoginActivity
 import com.id.destinasyik.ui.recomended.RecommendedAdapter
@@ -26,17 +29,38 @@ class HomeFragment : Fragment() {
     private val MAX_PEOPLE_LIKED = 5
     private val placeRepository = PlaceRepository()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
+        val tabLayout = binding.tabLayout
+        showFragment(CategoryPlaceFragment())
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> showFragment(CategoryPlaceFragment())
+                    1 -> showFragment(NearestPlaceFragment())
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                // Tidak perlu melakukan apa-apa di sini
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                // Tidak perlu melakukan apa-apa di sini
+            }
+        })
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecommendedRecyclerView()
         setupPeopleLikedRecyclerView()
         loadData()
         setupSearch()
@@ -50,22 +74,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupRecommendedRecyclerView() {
-        val recommendedRecyclerView = binding.recommendedRecyclerView
-        recommendedAdapter = RecommendedAdapter()
-        recommendedRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = recommendedAdapter
-        }
-
-        recommendedAdapter.setOnItemClickListener { place ->
-            Toast.makeText(requireContext(), "Clicked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
-
-        recommendedAdapter.setOnBookmarkClickListener { place ->
-            Toast.makeText(requireContext(), "Bookmarked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun setupPeopleLikedRecyclerView() {
         val peopleRecyclerView = binding.peopleLikedRecyclerView
@@ -80,7 +88,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadData() {
-        recommendedAdapter.submitList(placeRepository.getRecommendedPlaces())
         peopleAdapter.submitList(placeRepository.getLikedPlaces())
     }
 
@@ -101,4 +108,9 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun showFragment(fragment: Fragment) {
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, fragment)
+        transaction.commit()
+    }
 }
