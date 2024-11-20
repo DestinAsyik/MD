@@ -32,6 +32,13 @@ data class ProfileResponse(
 	val user: User? = null
 )
 
+data class LogoutResponse(
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+)
+
 data class User(
 
 	@field:SerializedName("password")

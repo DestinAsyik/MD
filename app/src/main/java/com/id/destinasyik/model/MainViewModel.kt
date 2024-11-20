@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.LoginResponse
+import com.id.destinasyik.data.remote.response.LogoutResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.RegisterResponse
 import com.id.destinasyik.data.remote.response.User
@@ -99,6 +100,27 @@ class MainViewModel : ViewModel() {
 
             override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
                 Log.e("User Profile", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    fun logout(authToken: String){
+        val client = ApiConfig.getApiService().logOut(authToken)
+        client.enqueue(object: Callback<LogoutResponse>{
+            override fun onResponse(
+                call: Call<LogoutResponse>,
+                response: Response<LogoutResponse>
+            ) {
+                if (response.isSuccessful){
+                    Log.e("Logout", "Succesfully Logout")
+                }else{
+                    Log.e("Logout", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
+                Log.e("Logout", "onFailure: ${t.message.toString()}")
             }
 
         })

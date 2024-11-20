@@ -2,6 +2,7 @@ package com.id.destinasyik.data.remote.retrofit
 
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.LoginResponse
+import com.id.destinasyik.data.remote.response.LogoutResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.RegisterResponse
 import retrofit2.Call
@@ -26,4 +27,9 @@ interface ApiService {
     fun getProfile(
         @Header("Authorization") authToken: String
     ): Call<ProfileResponse>
+
+    @POST("/auth/logout")
+    fun logOut(
+        @Header("Authorization") authToken: String
+    ): Call<LogoutResponse>
 }
