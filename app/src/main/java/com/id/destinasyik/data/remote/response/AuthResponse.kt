@@ -23,6 +23,15 @@ data class RegisterResponse(
 	val user: User? = null
 )
 
+data class ProfileResponse(
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+	@field:SerializedName("user")
+	val user: User? = null
+)
+
 data class User(
 
 	@field:SerializedName("password")

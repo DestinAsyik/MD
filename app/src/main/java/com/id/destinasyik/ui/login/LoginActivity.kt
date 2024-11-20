@@ -1,5 +1,7 @@
 package com.id.destinasyik.ui.login
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +12,7 @@ import com.google.gson.Gson
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
 import com.id.destinasyik.model.MainViewModel
+import com.id.destinasyik.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,63 +24,61 @@ import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        binding.button3.setOnClickListener { login(viewModel) }
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        if(isLoggedIn()){
+            navigateToMainScreen()
+        }
+        binding.button3.setOnClickListener {
+            val isAuthenticated=login()
+            if(isAuthenticated){
+                navigateToMainScreen()
+            }
+        }
     }
 
-    private fun login(viewModel: MainViewModel) {
+    private fun login():Boolean {
         val username = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
+        var isAuthenticated = false
         viewModel.loginAuth(username,password)
         viewModel.login.observe(this, Observer { response ->
             if(response!=null){
                 saveUserSession(response)
                 Log.d("AUTH TOKEN","${response.token}")
                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
+                isAuthenticated = true
             }else{
                 Toast.makeText(this@LoginActivity, "Failed to Login", Toast.LENGTH_SHORT).show()
+                isAuthenticated = false
             }
         })
-    }
-
-    private suspend fun authenticateUser(username: String, password: String): LoginResponse {
-        val client = OkHttpClient()
-        val requestBody = FormBody.Builder()
-            .add("username", username)
-            .add("password", password)
-            .build()
-
-        val request = Request.Builder()
-            .url("https://bangkit2024.up.railway.app/api/destinAsyik/auth/login")
-            .post(requestBody)
-            .build()
-
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = client.newCall(request).execute()
-                if (response.isSuccessful) {
-                    val responseBody = response.body?.string()
-                    Gson().fromJson(responseBody, LoginResponse::class.java)
-                } else {
-                    throw Exception("Invalid username or password")
-                }
-            } catch (e: IOException) {
-                throw Exception("Error connecting to the server")
-            }
-        }
+        return isAuthenticated
     }
 
     private fun saveUserSession(userData: LoginResponse) {
-        // Save the user data and token in the app's session
-        // This could involve storing the data in shared preferences, a database, or a session management library
+        val sharedPreferences: SharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        userData.user?.userId?.let { editor.putInt("userId", it) }
+        editor.putString("token",userData.token)
+        editor.apply()
+    }
+
+    private fun isLoggedIn (): Boolean{
+        val sharedPreferences: SharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        if(token!!.isNotEmpty()){
+            return true
+        }
+        return false
     }
 
     private fun navigateToMainScreen() {
-        // Navigate to the main screen of the app
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.LoginResponse
+import com.id.destinasyik.data.remote.response.ProfileResponse
+import com.id.destinasyik.data.remote.response.RegisterResponse
+import com.id.destinasyik.data.remote.response.User
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +19,8 @@ class MainViewModel : ViewModel() {
     val login: LiveData<LoginResponse> = _login
     private val _registrationStatus = MutableLiveData<Boolean>()
     val registrationStatus: LiveData<Boolean> get() = _registrationStatus
+    private val _profile = MutableLiveData<User?>()
+    val profile: LiveData<User?> = _profile
 
     fun registerUser (
         username: String,
@@ -36,8 +41,8 @@ class MainViewModel : ViewModel() {
             addProperty("prefered_category", preferedCategory)
         }
         val client = ApiConfig.getApiService().registerUser(jsonObject)
-        client.enqueue(object : Callback<LoginResponse>{
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+        client.enqueue(object : Callback<RegisterResponse>{
+            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful){
                     _registrationStatus.value = true
                     Log.e("Login Auth", "Succesfully Login")
@@ -46,7 +51,7 @@ class MainViewModel : ViewModel() {
                     Log.e("Login Auth", "onFailure: ${response.message()}")
                 }
             }
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _registrationStatus.value = false
                 Log.e("Login Auth", "onFailure: ${t.message.toString()}")
             }
@@ -75,5 +80,27 @@ class MainViewModel : ViewModel() {
             }
         })
 
+    }
+
+    fun getProfile(authToken: String){
+        val client = ApiConfig.getApiService().getProfile(authToken)
+        client.enqueue(object: Callback<ProfileResponse>{
+            override fun onResponse(
+                call: Call<ProfileResponse>,
+                response: Response<ProfileResponse>
+            ) {
+                if (response.isSuccessful){
+                    _profile.value = response.body()?.user
+                    Log.e("User Profile", "Succesfully Fetch Profile")
+                }else{
+                    Log.e("User Profile", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                Log.e("User Profile", "onFailure: ${t.message.toString()}")
+            }
+
+        })
     }
 }
