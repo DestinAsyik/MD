@@ -36,7 +36,15 @@ data class LogoutResponse(
 
 	@field:SerializedName("message")
 	val message: String? = null,
+)
 
+data class UpdateProfile(
+
+	@field:SerializedName("updatedData")
+	val updatedData: User? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
 )
 
 data class User(
