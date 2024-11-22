@@ -14,6 +14,39 @@ data class LoginResponse(
 	val token: String? = null
 )
 
+data class RegisterResponse(
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+	@field:SerializedName("user")
+	val user: User? = null
+)
+
+data class ProfileResponse(
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+	@field:SerializedName("user")
+	val user: User? = null
+)
+
+data class LogoutResponse(
+
+	@field:SerializedName("message")
+	val message: String? = null,
+)
+
+data class UpdateProfile(
+
+	@field:SerializedName("updatedData")
+	val updatedData: User? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
+)
+
 data class User(
 
 	@field:SerializedName("password")
