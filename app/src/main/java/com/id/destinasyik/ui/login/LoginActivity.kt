@@ -34,14 +34,11 @@ class LoginActivity : AppCompatActivity() {
             navigateToMainScreen()
         }
         binding.button3.setOnClickListener {
-            val isAuthenticated=login()
-            if(isAuthenticated){
-                navigateToMainScreen()
-            }
+            login()
         }
     }
 
-    private fun login():Boolean {
+    private fun login(){
         val username = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
         var isAuthenticated = false
@@ -51,13 +48,11 @@ class LoginActivity : AppCompatActivity() {
                 saveUserSession(response)
                 Log.d("AUTH TOKEN","${response.token}")
                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                isAuthenticated = true
+                navigateToMainScreen()
             }else{
                 Toast.makeText(this@LoginActivity, "Failed to Login", Toast.LENGTH_SHORT).show()
-                isAuthenticated = false
             }
         })
-        return isAuthenticated
     }
 
     private fun saveUserSession(userData: LoginResponse) {
@@ -71,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     private fun isLoggedIn (): Boolean{
         val sharedPreferences: SharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token",null)
-        if(token!!.isNotEmpty()){
+        if(token?.isNotEmpty() == true){
             return true
         }
         return false

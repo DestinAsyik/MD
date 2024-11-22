@@ -1,28 +1,33 @@
 package com.id.destinasyik.ui.recomended
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.id.destinasyik.data.repository.PlaceRepository
 import com.id.destinasyik.databinding.FragmentCategoryPlaceBinding
+import com.id.destinasyik.model.MainViewModel
 
 class CategoryPlaceFragment : Fragment() {
     private var _binding: FragmentCategoryPlaceBinding? = null
     private val binding get() = _binding!!
     private lateinit var recommendedAdapter: RecommendedAdapter
-    private val placeRepository = PlaceRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCategoryPlaceBinding.inflate(layoutInflater, container, false)
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setupRecommendedRecyclerView()
-        loadData()
+        loadData(viewModel)
         return binding?.root
     }
 
@@ -34,17 +39,16 @@ class CategoryPlaceFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedAdapter
         }
-
-        recommendedAdapter.setOnItemClickListener { place ->
-            Toast.makeText(requireContext(), "Clicked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
-
-        recommendedAdapter.setOnBookmarkClickListener { place ->
-            Toast.makeText(requireContext(), "Bookmarked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
     }
 
-    private fun loadData() {
-        recommendedAdapter.submitList(placeRepository.getRecommendedPlaces())
+    private fun loadData(viewModel: MainViewModel) {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        viewModel.reccomCategory(tokenBearer)
+        viewModel.placeReccomCategory.observe(viewLifecycleOwner){ place->
+            Log.d("Reccom Place","$place")
+            recommendedAdapter.submitList(place)
+        }
     }
 }

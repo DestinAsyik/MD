@@ -35,7 +35,7 @@ data class ReccomPlace(
 	val ratingAvg: Int? = null,
 
 	@field:SerializedName("latitude")
-	val latitude: Int? = null,
+	val latitude: Double? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -50,5 +50,5 @@ data class ReccomPlace(
 	val ratingCount: Int? = null,
 
 	@field:SerializedName("longitude")
-	val longitude: Int? = null
+	val longitude: Double? = null
 )

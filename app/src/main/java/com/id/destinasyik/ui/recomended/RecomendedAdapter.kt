@@ -11,24 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.id.destinasyik.R
 import com.id.destinasyik.data.local.mock.Place
+import com.id.destinasyik.data.remote.response.ReccomPlace
+import com.id.destinasyik.databinding.ItemRecommendedPlaceBinding
 
-class RecommendedAdapter : ListAdapter<Place, RecommendedAdapter.PlaceViewHolder>(PlaceDiffCallback()) {
-
-    private var onItemClickListener: ((Place) -> Unit)? = null
-    private var onFavoriteClickListener: ((Place) -> Unit)? = null
-
-    fun setOnItemClickListener(listener: (Place) -> Unit) {
-        onItemClickListener = listener
-    }
-
-    fun setOnBookmarkClickListener(listener: (Place) -> Unit) {
-        onFavoriteClickListener = listener
-    }
+class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recommended_place, parent, false)
-        return PlaceViewHolder(view)
+        val binding = ItemRecommendedPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PlaceViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
@@ -36,66 +26,22 @@ class RecommendedAdapter : ListAdapter<Place, RecommendedAdapter.PlaceViewHolder
         holder.bind(place)
     }
 
-    inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val cardView: MaterialCardView = itemView.findViewById(R.id.cardView)
-        private val imageView: ImageView = itemView.findViewById(R.id.placeImage)
-        private val nameText: TextView = itemView.findViewById(R.id.placeName)
-        private val locationText: TextView = itemView.findViewById(R.id.placeLocation)
-        private val priceText: TextView = itemView.findViewById(R.id.placePrice)
-        private val durationText: TextView = itemView.findViewById(R.id.placeDuration)
-        private val favoriteButton: ImageView = itemView.findViewById(R.id.favoriteButton)
-        private val ratingText: TextView = itemView.findViewById(R.id.ratingText)
-
-        fun bind(place: Place) {
-            // Set basic info
-            nameText.text = place.name
-            locationText.text = place.location
-            priceText.text = place.toDisplayPrice()
-            durationText.text = place.getFormattedDuration()
-            ratingText.text = String.format("%.1f", place.rating)
-
-            imageView.setImageResource(place.imageResource)
-
-            cardView.setOnClickListener {
-                onItemClickListener?.invoke(place)
-            }
-
-            favoriteButton.setOnClickListener {
-                onFavoriteClickListener?.invoke(place)
-                it.animate()
-                    .scaleX(0.8f)
-                    .scaleY(0.8f)
-                    .setDuration(100)
-                    .withEndAction {
-                        it.animate()
-                            .scaleX(1f)
-                            .scaleY(1f)
-                            .setDuration(100)
-                            .start()
-                    }
-                    .start()
-            }
-
-            itemView.apply {
-                alpha = 0f
-                translationY = 50f
-                animate()
-                    .alpha(1f)
-                    .translationY(0f)
-                    .setDuration(300)
-                    .setStartDelay(position * 50L)
-                    .start()
-            }
+    class PlaceViewHolder(val binding: ItemRecommendedPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(place: ReccomPlace) {
+            binding.placeName.text=place.placeName
+            binding.placeLocation.text=place.city
+            binding.ratingText.text=place.ratingAvg.toString()
         }
     }
 
-    class PlaceDiffCallback : DiffUtil.ItemCallback<Place>() {
-        override fun areItemsTheSame(oldItem: Place, newItem: Place): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Place, newItem: Place): Boolean {
-            return oldItem == newItem
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ReccomPlace>() {
+            override fun areItemsTheSame(oldItem: ReccomPlace, newItem: ReccomPlace): Boolean {
+                return oldItem == newItem
+            }
+            override fun areContentsTheSame(oldItem: ReccomPlace, newItem: ReccomPlace): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

@@ -14,7 +14,6 @@ class NearestPlaceFragment : Fragment() {
     private var _binding: FragmentNearestPlaceBinding? = null
     private val binding get() = _binding!!
     private lateinit var recommendedAdapter: RecommendedAdapter
-    private val placeRepository = PlaceRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +33,9 @@ class NearestPlaceFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = recommendedAdapter
         }
-
-        recommendedAdapter.setOnItemClickListener { place ->
-            Toast.makeText(requireContext(), "Clicked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
-
-        recommendedAdapter.setOnBookmarkClickListener { place ->
-            Toast.makeText(requireContext(), "Bookmarked: ${place.name}", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun loadData() {
-        recommendedAdapter.submitList(placeRepository.getRecommendedPlaces())
+
     }
 }

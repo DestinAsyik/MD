@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.BookmarkResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
+import com.id.destinasyik.data.remote.response.DeleteResponse
 import com.id.destinasyik.data.remote.response.Destination
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
@@ -225,4 +226,27 @@ class MainViewModel : ViewModel() {
 
         })
     }
+
+    fun deleteBookmark(authToken: String, id:Int){
+        val client = ApiConfig.getApiService().deleteBookmark(authToken, id)
+        client.enqueue(object: Callback<DeleteResponse>{
+            override fun onResponse(
+                call: Call<DeleteResponse>,
+                response: Response<DeleteResponse>
+            ) {
+                if (response.isSuccessful){
+                    Log.e("Bookmark", "Succesfully Delete Bookmarked Place")
+                }else{
+                    Log.e("Bookmark", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
+                Log.e("Bookmark", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+
 }

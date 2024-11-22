@@ -31,15 +31,6 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/gradient_overlay" />
 
-            <ImageView
-                android:id="@+id/favoriteButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="end|top"
-                android:layout_margin="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:src="@drawable/baseline_bookmark_border_24" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -101,31 +92,16 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
                     tools:text="Italy" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/placePrice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="$750" />
-
-                <TextView
-                    android:id="@+id/placeDuration"
+                    android:id="@+id/rangePlace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
-                    tools:text="5 Days" />
+                    tools:text="0 Km"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
