@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.BookmarkResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
+import com.id.destinasyik.data.remote.response.DeleteResponse
 import com.id.destinasyik.data.remote.response.Destination
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
-import com.id.destinasyik.data.remote.response.PlaceResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.ReccomPlace
+import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
+import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RegisterResponse
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.data.remote.response.User
@@ -31,8 +33,12 @@ class MainViewModel : ViewModel() {
     val profile: LiveData<User?> = _profile
     private val _placeReccomCategory = MutableLiveData<List<ReccomPlace?>?>()
     val placeReccomCategory: LiveData<List<ReccomPlace?>?> = _placeReccomCategory
+    private val _placeReccomNearby = MutableLiveData<List<ReccomPlace?>?>()
+    val placeReccomNearby: LiveData<List<ReccomPlace?>?> = _placeReccomNearby
     private val _bookmarkedPlace = MutableLiveData<List<BookmarksItem?>?>()
     val bookmarkedPlace: LiveData<List<BookmarksItem?>?> = _bookmarkedPlace
+    private val _loadingEvent = MutableLiveData<Boolean>()
+    val loadingEvent: LiveData<Boolean> = _loadingEvent
 
     fun registerUser (
         username: String,
@@ -162,11 +168,14 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    //Recommendation Section
     fun reccomCategory(authToken: String){
+        _loadingEvent.value=true
         val client = ApiConfig.getApiService().recomCategory(authToken)
-        client.enqueue(object: Callback<PlaceResponse>{
-            override fun onResponse(call: Call<PlaceResponse>, response: Response<PlaceResponse>) {
+        client.enqueue(object: Callback<RecommByCategoryResponse>{
+            override fun onResponse(call: Call<RecommByCategoryResponse>, response: Response<RecommByCategoryResponse>) {
                 if(response.isSuccessful){
+                    _loadingEvent.value=false
                     _placeReccomCategory.value = response.body()?.reccomByContent
                     Log.e("Recom Place", "Succesfully Recom By Category")
                 }else{
@@ -174,13 +183,40 @@ class MainViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+            override fun onFailure(call: Call<RecommByCategoryResponse>, t: Throwable) {
                 Log.e("Recom Place", "onFailure: ${t.message.toString()}")
             }
 
         })
     }
 
+    fun recommNearby(authToken: String, latitude: Double, longitude: Double){
+        _loadingEvent.value=true
+        val jsonObject = JsonObject().apply {
+            addProperty("latitude", latitude)
+            addProperty("longitude", longitude)
+        }
+        val client = ApiConfig.getApiService().recomNearby(authToken, jsonObject)
+        client.enqueue(object: Callback<RecommByNearbyResponse>{
+            override fun onResponse(call: Call<RecommByNearbyResponse>, response: Response<RecommByNearbyResponse>) {
+                if(response.isSuccessful){
+                    _loadingEvent.value=false
+                    _placeReccomNearby.value=response.body()?.reccomByJarak
+                    Log.e("Recom Place", "Succesfully Recom By Nearby")
+                }else{
+                    Log.e("Recom Place", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RecommByNearbyResponse>, t: Throwable) {
+                Log.e("Recom Place", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+
+    //Bookmark Secction
     fun addBookmark(authToken: String, itemId: Int){
         val jsonObject = JsonObject().apply {
             addProperty("item_id", itemId)
@@ -225,4 +261,27 @@ class MainViewModel : ViewModel() {
 
         })
     }
+
+    fun deleteBookmark(authToken: String, id:Int){
+        val client = ApiConfig.getApiService().deleteBookmark(authToken, id)
+        client.enqueue(object: Callback<DeleteResponse>{
+            override fun onResponse(
+                call: Call<DeleteResponse>,
+                response: Response<DeleteResponse>
+            ) {
+                if (response.isSuccessful){
+                    Log.e("Bookmark", "Succesfully Delete Bookmarked Place")
+                }else{
+                    Log.e("Bookmark", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
+                Log.e("Bookmark", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+
 }
