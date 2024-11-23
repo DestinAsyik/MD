@@ -2,13 +2,22 @@ package com.id.destinasyik.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class PlaceResponse(
+data class RecommByCategoryResponse(
 
 	@field:SerializedName("preferredCategory")
 	val preferredCategory: String? = null,
 
 	@field:SerializedName("reccomByContent")
 	val reccomByContent: List<ReccomPlace?>? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
+)
+
+data class RecommByNearbyResponse(
+
+	@field:SerializedName("reccomByJarak")
+	val reccomByJarak: List<ReccomPlace?>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null

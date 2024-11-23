@@ -28,6 +28,9 @@ class CategoryPlaceFragment : Fragment() {
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setupRecommendedRecyclerView()
         loadData(viewModel)
+        viewModel.loadingEvent.observe(viewLifecycleOwner){
+            loadingPage(it)
+        }
         return binding?.root
     }
 
@@ -47,8 +50,12 @@ class CategoryPlaceFragment : Fragment() {
         val tokenBearer = "Bearer "+token
         viewModel.reccomCategory(tokenBearer)
         viewModel.placeReccomCategory.observe(viewLifecycleOwner){ place->
-            Log.d("Reccom Place","$place")
+            Log.d("Reccom Category","$place")
             recommendedAdapter.submitList(place)
         }
+    }
+
+    private fun loadingPage(isLoading: Boolean) {
+        binding.loadingBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

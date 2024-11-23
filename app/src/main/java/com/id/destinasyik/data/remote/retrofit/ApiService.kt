@@ -6,8 +6,9 @@ import com.id.destinasyik.data.remote.response.DeleteResponse
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
-import com.id.destinasyik.data.remote.response.PlaceResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
+import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
+import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RegisterResponse
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import retrofit2.Call
@@ -52,7 +53,13 @@ interface ApiService {
     @POST("reccomendation/content")
     fun recomCategory(
         @Header("Authorization") authToken: String,
-    ): Call<PlaceResponse>
+    ): Call<RecommByCategoryResponse>
+
+    @POST("reccomendation/nearby")
+    fun recomNearby(
+        @Header("Authorization") authToken: String,
+        @Body jsonObject: JsonObject
+    ): Call<RecommByNearbyResponse>
 
     //Bookmark Section
     @POST("bookmark/add")
