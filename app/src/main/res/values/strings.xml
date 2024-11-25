@@ -8,4 +8,12 @@
     <string name="login">Login</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textdetail">"Have you ever been on holiday to the Greek islands before? There’s a good chance you may have come across Santorini before. "</string>
+    <string name="register">Register</string>
+    <string name="sign_Up">Sign Up</string>
+    <string name="deskripsi_reg">Sign up to enjoy the feature of Revolutie</string>
+    <string name="username">Username</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="city">City</string>
 </resources>

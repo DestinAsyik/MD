@@ -22,4 +22,20 @@
     <color name="background_light">#eff1f5</color>
     <color name="on_background_dark">#E6E1E5</color>
     <color name="on_background_light">#1C1B1F</color>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Warna Utama -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/dark_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Warna Latar -->
+        <item name="colorBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+
+        <!-- Warna Tab -->
+        <item name="tabTextColor">@color/gray</item>
+        <item name="tabSelectedTextColor">@color/green</item>
+        <item name="tabIndicatorColor">@color/green</item>
+    </style>
 </resources>
