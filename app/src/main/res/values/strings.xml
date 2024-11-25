@@ -16,4 +16,7 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="city">City</string>
+    <string name="_12km">12km</string>
+    <string name="book">Book Now</string>
+    <string name="tittle_detail">Santorini Island</string>
 </resources>
