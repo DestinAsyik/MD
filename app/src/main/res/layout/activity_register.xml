@@ -90,7 +90,7 @@
             android:background="@drawable/rounded_corner"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="@string/password"
+            android:hint="@string/password_conf"
             android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="#9A9A9A"

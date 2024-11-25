@@ -18,6 +18,12 @@
         android:theme="@style/Theme.DestinAsyik"
         tools:targetApi="31">
         <activity
+            android:name=".ui.updatepw.UpdatePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.forgotpw.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
