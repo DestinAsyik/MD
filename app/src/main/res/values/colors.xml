@@ -6,6 +6,9 @@
     <color name="green">#2D6A4F</color>
     <color name="dark_green">#1C1B1F</color>
     <color name="colorAccent">#2D6A4F</color>
+    <color name="transparent">#002D6A4F</color>
+    <color name="grey_radio">#EAEDF4</color>
+    <color name="radio_stroke">#CCC8C8</color>
 
     <!-- Primary color -->
     <color name="primary">#336749</color>

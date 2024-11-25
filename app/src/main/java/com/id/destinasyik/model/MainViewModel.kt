@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
         username: String,
         name: String,
         password: String,
-        age: Int,
+        age: String,
         email: String,
         city: String,
         preferedCategory: String

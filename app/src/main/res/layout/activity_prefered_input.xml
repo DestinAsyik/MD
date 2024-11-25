@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.preference.PreferedInputActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Travel Preferences"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/airplane"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What kind of places do you like to visit? Share your travel preferences and we'll suggest some great destinations!"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"/>
+    <RadioGroup
+        android:id="@+id/radioPreferences"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedBudaya"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Budaya 🪭"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            />
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedTaman"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Taman Hiburan  🎡"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedBahari"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bahari 🏝️"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedAlam"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cagar Alam🌲"
+            android:textSize="15sp"
+            android:textColor="@drawable/radio_color"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedPerbelanjaan"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pusat Perbelanjaan 🏬"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedReligius"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tempat Ibadah 🕌"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+        <RadioButton
+            android:background="@drawable/radio_background"
+            android:id="@+id/preferedAgrowisata"
+            android:button="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agrowisata 🏡"
+            android:textColor="@drawable/radio_color"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"/>
+    </RadioGroup>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:backgroundTint="#336749"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Pick Preference"
+        android:textSize="15sp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        />
+</LinearLayout>
