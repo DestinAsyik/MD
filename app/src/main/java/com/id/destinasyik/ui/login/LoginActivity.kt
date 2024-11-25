@@ -13,6 +13,7 @@ import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.MainActivity
+import com.id.destinasyik.ui.preference.PreferedInputActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,9 +30,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         if(isLoggedIn()){
-            navigateToMainScreen()
+            navigateToMainScreen(false)
         }
         binding.button3.setOnClickListener {
             login()
@@ -48,7 +50,11 @@ class LoginActivity : AppCompatActivity() {
                 saveUserSession(response)
                 Log.d("AUTH TOKEN","${response.token}")
                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                navigateToMainScreen()
+                if(response.user?.preferedCategory==null){
+                    navigateToMainScreen(true)
+                }else{
+                    navigateToMainScreen(false)
+                }
             }else{
                 Toast.makeText(this@LoginActivity, "Failed to Login", Toast.LENGTH_SHORT).show()
             }
@@ -72,9 +78,14 @@ class LoginActivity : AppCompatActivity() {
         return false
     }
 
-    private fun navigateToMainScreen() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+    private fun navigateToMainScreen(isFirstTime: Boolean) {
+        if(isFirstTime){
+            val intent = Intent(this, PreferedInputActivity::class.java)
+            startActivity(intent)
+        }else{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onBackPressed() {
