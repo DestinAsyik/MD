@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#F0F0F0</color>
+    <color name="green">#2D6A4F</color>
+    <color name="dark_green">#1C1B1F</color>
     <color name="colorAccent">#2D6A4F</color>
 
     <!-- Primary color -->
@@ -30,11 +32,11 @@
         <item name="colorOnPrimary">@color/white</item>
 
         <!-- Warna Latar -->
-        <item name="colorBackground">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
         <item name="colorSurface">@color/white</item>
 
         <!-- Warna Tab -->
-        <item name="tabTextColor">@color/gray</item>
+        <item name="tabTextColor">@color/grey</item>
         <item name="tabSelectedTextColor">@color/green</item>
         <item name="tabIndicatorColor">@color/green</item>
     </style>
