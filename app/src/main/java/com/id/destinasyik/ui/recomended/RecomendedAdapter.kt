@@ -1,5 +1,6 @@
 package com.id.destinasyik.ui.recomended
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.id.destinasyik.R
 import com.id.destinasyik.data.local.mock.Place
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.databinding.ItemRecommendedPlaceBinding
+import com.id.destinasyik.ui.detail.DetailActivity
 
 class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceViewHolder>(DIFF_CALLBACK){
 
@@ -24,6 +26,11 @@ class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceView
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
         val place = getItem(position)
         holder.bind(place)
+        holder.itemView.setOnClickListener {
+            val moveWithObjectIntent = Intent(holder.itemView.context,DetailActivity::class.java)
+            moveWithObjectIntent.putExtra("ID_PLACE", "${place.itemId}")
+            holder.itemView.context.startActivity(moveWithObjectIntent)
+        }
     }
 
     class PlaceViewHolder(val binding: ItemRecommendedPlaceBinding) : RecyclerView.ViewHolder(binding.root) {

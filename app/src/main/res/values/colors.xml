@@ -9,6 +9,7 @@
     <color name="transparent">#002D6A4F</color>
     <color name="grey_radio">#EAEDF4</color>
     <color name="radio_stroke">#CCC8C8</color>
+    <color name="grey_range">#9A9A9A</color>
 
     <!-- Primary color -->
     <color name="primary">#336749</color>
