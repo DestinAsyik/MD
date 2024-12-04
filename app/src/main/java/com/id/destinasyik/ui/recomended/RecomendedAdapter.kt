@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.id.destinasyik.R
 import com.id.destinasyik.data.local.mock.Place
@@ -28,7 +29,7 @@ class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceView
         holder.bind(place)
         holder.itemView.setOnClickListener {
             val moveWithObjectIntent = Intent(holder.itemView.context,DetailActivity::class.java)
-            moveWithObjectIntent.putExtra("ID_PLACE", "${place.itemId}")
+            moveWithObjectIntent.putExtra("PLACE", place)
             holder.itemView.context.startActivity(moveWithObjectIntent)
         }
     }
@@ -38,6 +39,9 @@ class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceView
             binding.placeName.text=place.placeName
             binding.placeLocation.text=place.city
             binding.ratingText.text=place.ratingAvg.toString()
+            Glide.with(binding.placeImage.context)
+                .load(place.gambar)
+                .into(binding.placeImage)
         }
     }
 

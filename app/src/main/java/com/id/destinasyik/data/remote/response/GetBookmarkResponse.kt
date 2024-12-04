@@ -1,41 +1,17 @@
 package com.id.destinasyik.data.remote.response
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-data class RecommByCategoryResponse(
+data class GetBookmarkResponse(
 
-	@field:SerializedName("preferredCategory")
-	val preferredCategory: String? = null,
-
-	@field:SerializedName("reccomByContent")
-	val reccomByContent: List<ReccomPlace?>? = null,
+	@field:SerializedName("bookmarks")
+	val bookmarks: List<BookmarksItem?>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null
 )
 
-data class RecommByNearbyResponse(
-
-	@field:SerializedName("data")
-	val reccomByJarak: List<ReccomPlace?>? = null,
-
-	@field:SerializedName("message")
-	val message: String? = null
-)
-
-data class RecommByPeopleLiked(
-
-	@field:SerializedName("recommendations")
-	val recommPeopleLiked: List<ReccomPlace?>? = null,
-
-	@field:SerializedName("message")
-	val message: String? = null
-)
-
-@Parcelize
-data class ReccomPlace(
+data class Destination(
 
 	@field:SerializedName("place_name")
 	val placeName: String? = null,
@@ -56,7 +32,7 @@ data class ReccomPlace(
 	val ratingAvg: Int? = null,
 
 	@field:SerializedName("latitude")
-	val latitude: Double? = null,
+	val latitude: Int? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -65,11 +41,26 @@ data class ReccomPlace(
 	val category: String? = null,
 
 	@field:SerializedName("gambar")
-	val gambar: String? = null,
+	val gambar: Any? = null,
 
 	@field:SerializedName("rating_count")
 	val ratingCount: Int? = null,
 
 	@field:SerializedName("longitude")
-	val longitude: Double? = null
-):Parcelable
+	val longitude: Int? = null
+)
+
+data class BookmarksItem(
+
+	@field:SerializedName("bookmark_id")
+	val bookmarkId: Int? = null,
+
+	@field:SerializedName("Destination")
+	val destination: Destination? = null,
+
+	@field:SerializedName("user_id")
+	val userId: Int? = null,
+
+	@field:SerializedName("item_id")
+	val itemId: Int? = null
+)
