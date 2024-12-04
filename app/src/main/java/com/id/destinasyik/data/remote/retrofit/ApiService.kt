@@ -74,4 +74,10 @@ interface ApiService {
         @Header("Authorization") authToken: String,
     ): Call<GetBookmarkResponse>
 
+    //Like Toggle
+    @POST("likes/toggle-like")
+    fun addLike(
+        @Header("Authorization") authToken: String,
+        @Body jsonObject: JsonObject
+    ): Call<AddBookmarkResponse>
 }

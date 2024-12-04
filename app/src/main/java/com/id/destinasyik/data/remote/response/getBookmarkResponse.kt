@@ -14,8 +14,8 @@ data class BookmarksItem(
 	@field:SerializedName("item_id")
 	val itemId: Int? = null,
 
-	@field:SerializedName("destination")
-	val destination: Destination? = null
+	@field:SerializedName("Destination")
+	val destination: ReccomPlace? = null
 )
 
 @Parcelize
@@ -40,7 +40,7 @@ data class Destination(
 	val ratingAvg: Int? = null,
 
 	@field:SerializedName("latitude")
-	val latitude: Int? = null,
+	val latitude: Double? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -55,7 +55,7 @@ data class Destination(
 	val ratingCount: Int? = null,
 
 	@field:SerializedName("longitude")
-	val longitude: Int? = null
+	val longitude: Double? = null
 ):Parcelable
 
 data class GetBookmarkResponse(
