@@ -14,7 +14,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://bangkit2024.up.railway.app/api/destinAsyik/")
+                .baseUrl("https://destinasyikapi-service-478353399681.asia-southeast2.run.app/api/destinAsyik/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

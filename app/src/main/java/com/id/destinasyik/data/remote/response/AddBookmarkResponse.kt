@@ -2,7 +2,10 @@ package com.id.destinasyik.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class BookmarkResponse(
+data class AddBookmarkResponse(
+
+	@field:SerializedName("isBookmarked")
+	val isBookmarked: Boolean? = null,
 
 	@field:SerializedName("newBookmark")
 	val newBookmark: NewBookmark? = null,

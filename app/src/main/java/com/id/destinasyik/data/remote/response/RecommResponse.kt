@@ -1,6 +1,8 @@
 package com.id.destinasyik.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class RecommByCategoryResponse(
 
@@ -16,13 +18,23 @@ data class RecommByCategoryResponse(
 
 data class RecommByNearbyResponse(
 
-	@field:SerializedName("reccomByJarak")
+	@field:SerializedName("data")
 	val reccomByJarak: List<ReccomPlace?>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null
 )
 
+data class RecommByPeopleLiked(
+
+	@field:SerializedName("recommendations")
+	val recommPeopleLiked: List<ReccomPlace?>? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
+)
+
+@Parcelize
 data class ReccomPlace(
 
 	@field:SerializedName("place_name")
@@ -53,11 +65,11 @@ data class ReccomPlace(
 	val category: String? = null,
 
 	@field:SerializedName("gambar")
-	val gambar: Any? = null,
+	val gambar: String? = null,
 
 	@field:SerializedName("rating_count")
 	val ratingCount: Int? = null,
 
 	@field:SerializedName("longitude")
 	val longitude: Double? = null
-)
+):Parcelable

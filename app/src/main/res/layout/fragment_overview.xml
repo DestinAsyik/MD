@@ -16,6 +16,7 @@
             android:id="@+id/tvOverview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:text="Taman Pintar Yogyakarta (bahasa Jawa: Hanacaraka,ꦠꦩꦤ꧀​ꦥꦶꦤ꧀ꦠꦂ​ꦔꦪꦺꦴꦒꦾꦏꦂꦠ, Taman Pintar Ngayogyakarta) adalah wahana wisata yang terdapat di pusat Kota Yogyakarta, tepatnya di Jalan Panembahan Senopati No. 1-3, Yogyakarta, di kawasan Benteng Vredeburg. Taman ini memadukan tempat wisata rekreasi maupun edukasi dalam satu lokasi. Taman Pintar memiliki arena bermain sekaligus sarana edukasi yang terbagi dalam beberapa zona. Akses langsung kepada pusat buku eks Shopping Centre juga menambah nilai lebih Taman Pintar. Tempat rekreasi ini sangat baik untuk anak-anak pada masa perkembangan.\nBeberapa tahun ini Taman Pintar menjadi alternatif tempat berwisata bagi masyarakat Yogyakarta maupun luar kota.Taman ini, khususnya pada wahana pendidikan anak usia dini dilengkapi dengan teknologi interaktif digital serta pemetaan video yang akan memacu imajinasi anak serta ketertarikan mereka terhadap teknologi. Pada saat ini ada 35 zona dan 3.500 alat peraga permainan yang edukatif."/>
 
         <Button
