@@ -1,6 +1,8 @@
 package com.id.destinasyik.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class BookmarksItem(
 
@@ -17,6 +19,7 @@ data class BookmarksItem(
 	val destination: Destination? = null
 )
 
+@Parcelize
 data class Destination(
 
 	@field:SerializedName("place_name")
@@ -47,14 +50,14 @@ data class Destination(
 	val category: String? = null,
 
 	@field:SerializedName("gambar")
-	val gambar: Any? = null,
+	val gambar: String? = null,
 
 	@field:SerializedName("rating_count")
 	val ratingCount: Int? = null,
 
 	@field:SerializedName("longitude")
 	val longitude: Int? = null
-)
+):Parcelable
 
 data class GetBookmarkResponse(
 
