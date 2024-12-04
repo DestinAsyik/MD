@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -46,9 +47,17 @@ class DetailActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("token",null)
         val tokenBearer = "Bearer "+token
         loadData(place)
+        checkIsBookmarked(tokenBearer, place)
         binding.btnBookmark.setOnClickListener {
             place?.itemId?.let { it1 -> viewModel.addBookmark(tokenBearer, it1) }
         }
+    }
+
+    private fun checkIsBookmarked(authToken: String, place: ReccomPlace?){
+        place?.itemId?.let { it1 -> viewModel.statusBookmark(authToken, it1) }
+        viewModel.statusBookmark.observe(this, Observer { response->
+            response.isBookmarked?.let { iconChangeBookmark(it) }
+        })
     }
 
     private fun iconChangeBookmark(isBookmark: Boolean){

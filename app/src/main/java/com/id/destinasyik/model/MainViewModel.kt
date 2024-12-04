@@ -43,6 +43,9 @@ class MainViewModel : ViewModel() {
     val loadingEvent: LiveData<Boolean> = _loadingEvent
     private val _bookmarkResponse = MutableLiveData<AddBookmarkResponse>()
     val bookmarkResponse: LiveData<AddBookmarkResponse> = _bookmarkResponse
+    private val _statusBookmark = MutableLiveData<AddBookmarkResponse>()
+    val statusBookmark: LiveData<AddBookmarkResponse> = _statusBookmark
+
 
     fun registerUser (
         username: String,
@@ -256,6 +259,33 @@ class MainViewModel : ViewModel() {
                 response: Response<AddBookmarkResponse>
             ) {
                 if (response.isSuccessful){
+                    _bookmarkResponse.value=response.body()
+                    _statusBookmark.value=response.body()
+                    Log.e("Bookmark", "Succesfully Bookmark Place")
+                }else{
+                    Log.e("Bookmark", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AddBookmarkResponse>, t: Throwable) {
+                Log.e("Bookmark", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Bookmark Secction
+    fun statusBookmark(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addBookmark(authToken, jsonObject)
+        client.enqueue(object: Callback<AddBookmarkResponse>{
+            override fun onResponse(
+                call: Call<AddBookmarkResponse>,
+                response: Response<AddBookmarkResponse>
+            ) {
+                if (response.isSuccessful){
+                    addBookmark(authToken, itemId)
                     Log.e("Bookmark", "Succesfully Bookmark Place")
                 }else{
                     Log.e("Bookmark", "onFailure: ${response.message()}")

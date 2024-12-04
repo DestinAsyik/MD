@@ -60,6 +60,9 @@ class HomeFragment : Fragment() {
                 // Tidak perlu melakukan apa-apa di sini
             }
         })
+        viewModel.loadingEvent.observe(viewLifecycleOwner){
+            loadingPage(it)
+        }
         return binding?.root
     }
 
@@ -132,5 +135,9 @@ class HomeFragment : Fragment() {
         val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, fragment)
         transaction.commit()
+    }
+
+    private fun loadingPage(isLoading: Boolean) {
+        binding.loadingBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

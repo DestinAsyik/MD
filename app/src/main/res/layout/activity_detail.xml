@@ -49,11 +49,11 @@
                     app:fabSize="mini"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearance="oval"
                     app:srcCompat="@drawable/btn_back"
                     app:tint="#24C690"
                     android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"/>
+                    android:layout_marginStart="16dp"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +126,7 @@
                             android:backgroundTint="@color/primary"
                             app:tint="@color/white"
                             android:layout_gravity="center"
-                            app:shapeAppearance="oval"
+
                             />
                         <TextView
                             android:layout_width="wrap_content"
@@ -150,7 +150,6 @@
                             android:backgroundTint="@color/primary"
                             app:tint="@color/white"
                             android:layout_gravity="center"
-                            app:shapeAppearance="oval"
                             />
                         <TextView
                             android:layout_width="wrap_content"
@@ -173,7 +172,6 @@
                             style="?attr/floatingActionButtonSmallStyle"
                             android:backgroundTint="@color/primary"
                             app:tint="@color/white"
-                            app:shapeAppearance="oval"
                             />
                         <TextView
                             android:layout_width="wrap_content"
@@ -197,7 +195,6 @@
                         style="?attr/floatingActionButtonSmallStyle"
                         android:backgroundTint="@color/primary"
                         app:tint="@color/white"
-                        app:shapeAppearance="oval"
                         />
                     <TextView
                         android:layout_width="wrap_content"
