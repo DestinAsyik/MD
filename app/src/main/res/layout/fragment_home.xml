@@ -39,10 +39,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sign In"
+                        android:layout_marginTop="10dp"
                         android:layout_marginStart="8dp"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -50,101 +52,94 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Explore the\nBeautiful world!"
+                android:text="@string/headline"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:padding="16dp"/>
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/black"
+                android:padding="8dp"/>
 
             <!-- Search Card -->
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+                android:layout_width="322dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:gravity="center_vertical">
+                    android:layout_height="match_parent"
+                    android:background="@color/grey"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/baseline_search_24"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_search_24" />
 
-                        <EditText
-                            android:id="@+id/searchEditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="8dp"
-                            android:background="@null"
-                            android:hint="Search Places"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvSearch"
-                        android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginEnd="16dp"
-                        />
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="Search Places"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Recommend Section -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Recommend Based On Your"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/recommend"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Show more ›"
-                    android:textColor="@color/primary"
-                    android:textSize="14sp"/>
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/show_more"
+                    android:textColor="#89807A"
+                    android:textSize="11sp" />
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="274dp"
+                android:layout_height="23dp"
+                android:layout_marginHorizontal="50dp"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabMode="fixed"
-                app:tabIndicatorGravity="top"
-                app:tabTextColor="@color/primary"
                 app:tabIndicatorColor="@color/primary"
-                android:elevation="0dp"
-                android:background="@android:color/transparent"
-                android:layout_marginHorizontal="50dp">
+                app:tabIndicatorGravity="top"
+                app:tabMode="fixed"
+                app:tabTextColor="@color/primary">
+                 <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Category" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nearest Place" />
+                    android:text="@string/nearest_place" />
             </com.google.android.material.tabs.TabLayout>
 
             <FrameLayout
@@ -158,42 +153,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp"
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="People Liked"
+                    android:text="@string/people_liked"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Show more ›"
-                    android:textColor="@color/colorAccent"/>
+                    android:text="@string/show_more"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="#89807A"/>
             </LinearLayout>
-            <LinearLayout
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/peopleLikedRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <ProgressBar
-                    android:id="@+id/loadingBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="gone" />
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/peopleLikedRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:padding="8dp"/>
-            </LinearLayout>
+                android:clipToPadding="false"
+                android:padding="8dp"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
