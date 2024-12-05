@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ticket"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/poppins_regular"/>
@@ -24,11 +24,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTicket"/>
     <TextView
+        android:id="@+id/ticketPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rp. 10.000"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:fontFamily="@font/poppins_bold"
         app:layout_constraintTop_toTopOf="@id/imageTicket"
         app:layout_constraintStart_toEndOf="@id/imageTicket"
         android:layout_marginStart="10dp"
@@ -38,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Vehicle Fuel"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageTicket"
         android:layout_marginTop="10dp"
@@ -60,6 +62,7 @@
             android:textColor="@color/primary"
             android:textStyle="bold"/>
         <TextView
+            android:id="@+id/solarRange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0 Km"
@@ -73,7 +76,8 @@
             android:text="Rp. 30.000"
             android:textSize="20sp"
             android:layout_marginStart="30dp"
-            android:textStyle="bold"/>
+            android:fontFamily="@font/poppins_bold"
+            />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/pertaliteContainer"
@@ -91,6 +95,7 @@
             android:textColor="@color/primary"
             android:textStyle="bold"/>
         <TextView
+            android:id="@+id/pertaliteRange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0 Km"
@@ -104,7 +109,8 @@
             android:text="Rp. 40.000"
             android:textSize="20sp"
             android:layout_marginStart="30dp"
-            android:textStyle="bold"/>
+            android:fontFamily="@font/poppins_bold"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,6 +127,7 @@
             android:textColor="@color/primary"
             android:textStyle="bold"/>
         <TextView
+            android:id="@+id/pertamaxRange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0 Km"
@@ -133,7 +140,8 @@
             android:layout_height="wrap_content"
             android:text="Rp. 50.000"
             android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
             android:layout_marginStart="30dp"
-            android:textStyle="bold"/>
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

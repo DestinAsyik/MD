@@ -8,9 +8,12 @@ import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.DeleteResponse
+import com.id.destinasyik.data.remote.response.FuelDetailsItem
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
+import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
+import com.id.destinasyik.data.remote.response.PricingResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
@@ -46,6 +49,13 @@ class MainViewModel : ViewModel() {
     private val _statusBookmark = MutableLiveData<AddBookmarkResponse>()
     val statusBookmark: LiveData<AddBookmarkResponse> = _statusBookmark
 
+    private val _likeResponse = MutableLiveData<LikeResponse>()
+    val likeResponse: LiveData<LikeResponse> = _likeResponse
+    private val _statusLike = MutableLiveData<LikeResponse>()
+    val statusLike: LiveData<LikeResponse> = _statusLike
+
+    private val _listCost = MutableLiveData<PricingResponse>()
+    val listCost: LiveData<PricingResponse> = _listCost
 
     fun registerUser (
         username: String,
@@ -320,5 +330,81 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    //Like Section
+    //Bookmark Secction
+    fun addLikes(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addLike(authToken, jsonObject)
+        client.enqueue(object: Callback<LikeResponse>{
+            override fun onResponse(
+                call: Call<LikeResponse>,
+                response: Response<LikeResponse>
+            ) {
+                if (response.isSuccessful){
+                    _likeResponse.value=response.body()
+                    _statusLike.value=response.body()
+                    Log.e("Like", "Succesfully Like Place")
+                }else{
+                    Log.e("Like", "onFailure: ${response.message()}")
+                }
+            }
 
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
+                Log.e("Like", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Bookmark Secction
+    fun statusLikes(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addLike(authToken, jsonObject)
+        client.enqueue(object: Callback<LikeResponse>{
+            override fun onResponse(
+                call: Call<LikeResponse>,
+                response: Response<LikeResponse>
+            ) {
+                if (response.isSuccessful){
+                    addLikes(authToken, itemId)
+                    Log.e("Like", "Succesfully Fetch Status Like Place")
+                }else{
+                    Log.e("Like", "onFailure: ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
+                Log.e("Like", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Pricing Section
+    fun getPricing(authToken: String, itemId: Int, latitude: Double, longitude: Double){
+        val jsonObject = JsonObject().apply {
+            addProperty("userLat", latitude)
+            addProperty("userLon", longitude)
+        }
+        val client = ApiConfig.getApiService().fuelPricing(authToken, jsonObject, itemId)
+        client.enqueue(object: Callback<PricingResponse>{
+            override fun onResponse(
+                call: Call<PricingResponse>,
+                response: Response<PricingResponse>
+            ) {
+                if (response.isSuccessful){
+                    _listCost.value=response.body()
+                    Log.e("Travel Cost", "Succesfully Fetch Travel Cost")
+                }else{
+                    Log.e("Travel Cost", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<PricingResponse>, t: Throwable) {
+                Log.e("Travel Cost", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
 }
