@@ -48,8 +48,12 @@ class DetailActivity : AppCompatActivity() {
         val tokenBearer = "Bearer "+token
         loadData(place)
         checkIsBookmarked(tokenBearer, place)
+        checkIsLiked(tokenBearer, place)
         binding.btnBookmark.setOnClickListener {
             place?.itemId?.let { it1 -> viewModel.addBookmark(tokenBearer, it1) }
+        }
+        binding.btnLike.setOnClickListener {
+            place?.itemId?.let { it1 -> viewModel.addLikes(tokenBearer, it1) }
         }
     }
 
@@ -60,6 +64,13 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun checkIsLiked(authToken: String, place: ReccomPlace?){
+        place?.itemId?.let { viewModel.statusLikes(authToken, it) }
+        viewModel.statusLike.observe(this, Observer { response->
+            response.data?.isLiked?.let { iconChangeLiked(it) }
+        })
+    }
+    
     private fun iconChangeBookmark(isBookmark: Boolean){
         val icon = if(isBookmark){
             R.drawable.already_bookmark

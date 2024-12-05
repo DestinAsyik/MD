@@ -3,8 +3,10 @@ package com.id.destinasyik.data.remote.retrofit
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
+import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
+import com.id.destinasyik.data.remote.response.PricingResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
@@ -16,6 +18,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     //User Section
@@ -79,5 +82,13 @@ interface ApiService {
     fun addLike(
         @Header("Authorization") authToken: String,
         @Body jsonObject: JsonObject
-    ): Call<AddBookmarkResponse>
+    ): Call<LikeResponse>
+
+    //Pricing
+    @POST("fuel/{item_id}/cost")
+    fun fuelPricing(
+        @Header("Authorization") authToken: String,
+        @Body jsonObject: JsonObject,
+        @Path("item_id") itemId: Int
+    ): Call<PricingResponse>
 }

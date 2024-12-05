@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="30sp"
+            android:fontFamily="@font/inter_bold"
             app:layout_constraintStart_toStartOf="@id/tvRating"
             app:layout_constraintEnd_toEndOf="@id/tvRating"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="(Total Review)"
             android:textSize="10sp"
+            android:fontFamily="@font/inter_regular"
             app:layout_constraintTop_toBottomOf="@id/tvRating"
             app:layout_constraintStart_toStartOf="@id/tvRating"
             app:layout_constraintEnd_toEndOf="@id/tvRating"/>
@@ -46,17 +48,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvRating"
             android:layout_marginTop="4dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="10dp"
             />
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/fiveStarBar"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/fivestar"
-            app:layout_constraintTop_toTopOf="@id/fivestar"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
-            />
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@id/fivestar"
+            app:layout_constraintTop_toTopOf="@id/fivestar" />
         <TextView
             android:id="@+id/fourstar"
             android:layout_width="wrap_content"
@@ -69,7 +71,7 @@
             />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/fourStarBar"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/fourstar"
             app:layout_constraintTop_toTopOf="@id/fourstar"
@@ -88,7 +90,7 @@
             />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/threeStarBar"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/threestar"
             app:layout_constraintTop_toTopOf="@id/threestar"
@@ -107,7 +109,7 @@
             />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/twoStarBar"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/twostar"
             app:layout_constraintTop_toTopOf="@id/twostar"
@@ -126,7 +128,7 @@
             />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/oneStarBar"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/onestar"
             app:layout_constraintTop_toTopOf="@id/onestar"
@@ -139,8 +141,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Your Ratings and Review"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_bold"
             app:layout_constraintTop_toBottomOf="@id/onestar"
             app:layout_constraintStart_toStartOf="parent"/>
         <ImageView
