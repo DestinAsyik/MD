@@ -50,7 +50,7 @@ class PreferedInputActivity : AppCompatActivity() {
         viewModel.updateProfile(
             username = "", // These fields will be unchanged
             name = "",
-            age = 0,
+            tanggal_lahir = "",
             email = "",
             city = "",
             preferedCategory = selectedPreferences,

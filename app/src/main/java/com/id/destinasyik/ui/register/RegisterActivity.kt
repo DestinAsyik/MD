@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.id.destinasyik.databinding.ActivityRegisterBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.login.LoginActivity
+import java.util.Calendar
+import android.app.DatePickerDialog
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -17,129 +19,90 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
-        setupViewModel()
-        setupClickListeners()
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        setupDatePicker()
+        setupRegisterButton()
+        observeRegistrationStatus()
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        
+    private fun setupDatePicker() {
+        binding.etBorn.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Format the date as YYYY-MM-DD (common backend format)
+                    val formattedDay = String.format("%02d", selectedDay)
+                    val formattedMonth = String.format("%02d", selectedMonth + 1)
+                    val selectedDate = "$selectedYear-$formattedMonth-$formattedDay"
+                    binding.etBorn.setText(selectedDate)
+                },
+                year,
+                month,
+                day
+            ).show()
+        }
+    }
+
+    private fun setupRegisterButton() {
+        binding.buttonRegister.setOnClickListener {
+            val username = binding.etUsername.text.toString()
+            val email = binding.etEmail.text.toString()
+            val password = binding.passwordInput.text.toString()
+            val passwordConfirmation = binding.passwordConfirmation.text.toString()
+            val city = binding.etCity.text.toString()
+            val tanggalLahir = binding.etBorn.text.toString() // This will be in format "DD/MM/YYYY"
+            val name = binding.etFullName.text.toString()
+
+            // Input validation
+            when {
+                username.isEmpty() -> showToast("Username cannot be empty")
+                email.isEmpty() -> showToast("Email cannot be empty")
+                password.isEmpty() -> showToast("Password cannot be empty")
+                passwordConfirmation.isEmpty() -> showToast("Password confirmation cannot be empty")
+                city.isEmpty() -> showToast("City cannot be empty")
+                tanggalLahir == "Born" || tanggalLahir.isEmpty() -> showToast("Date of birth cannot be empty")
+                name.isEmpty() -> showToast("Name cannot be empty")
+                password != passwordConfirmation -> showToast("Passwords do not match")
+                else -> {
+                    // Default preferred category if none selected
+                    val preferredCategory = "Nature" // You can modify this as needed
+
+                    // Proceed with registration
+                    viewModel.registerUser(
+                        username = username,
+                        name = name,
+                        password = password,
+                        tanggal_lahir = tanggalLahir,
+                        email = email,
+                        city = city,
+                        preferedCategory = preferredCategory
+                    )
+                }
+            }
+        }
+    }
+
+    private fun observeRegistrationStatus() {
         viewModel.registrationStatus.observe(this) { isRegistered ->
             if (isRegistered) {
-                Toast.makeText(this, "Registration successful! Please login.", Toast.LENGTH_SHORT).show()
-                navigateToLogin()
+                showToast("Registration successful!")
+                // Navigate to login screen
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            } else {
+                showToast("Registration failed. Please try again.")
             }
         }
     }
 
-    private fun setupClickListeners() {
-        binding.buttonRegister.setOnClickListener {
-            if (validateInputs()) {
-                registerUser()
-            }
-        }
-    }
-
-    private fun validateInputs(): Boolean {
-        val username = binding.etUsername.text.toString()
-        val email = binding.etEmail.text.toString()
-        val password = binding.passwordInput.text.toString()
-        val passwordConfirmation = binding.passwordConfirmation.text.toString()
-        val fullName = binding.etFullName.text.toString()
-        val city = binding.etCity.text.toString()
-        val age = binding.etBorn.text.toString()
-
-        if (username.isEmpty()) {
-            binding.etUsername.error = "Username cannot be empty"
-            return false
-        }
-
-        if (email.isEmpty()) {
-            binding.etEmail.error = "Email cannot be empty"
-            return false
-        }
-
-        if (!isValidEmail(email)) {
-            binding.etEmail.error = "Please enter a valid email"
-            return false
-        }
-
-        if (password.isEmpty()) {
-            binding.passwordInput.error = "Password cannot be empty"
-            return false
-        }
-
-        if (password.length < 6) {
-            binding.passwordInput.error = "Password must be at least 6 characters"
-            return false
-        }
-
-        if (passwordConfirmation.isEmpty()) {
-            binding.passwordConfirmation.error = "Please confirm your password"
-            return false
-        }
-
-        if (password != passwordConfirmation) {
-            binding.passwordConfirmation.error = "Passwords do not match"
-            return false
-        }
-
-        if (fullName.isEmpty()) {
-            binding.etFullName.error = "Full name cannot be empty"
-            return false
-        }
-
-        if (city.isEmpty()) {
-            binding.etCity.error = "City cannot be empty"
-            return false
-        }
-
-        if (age.isEmpty()) {
-            binding.etBorn.error = "Age cannot be empty"
-            return false
-        }
-
-        return true
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun registerUser() {
-        val username = binding.etUsername.text.toString()
-        val email = binding.etEmail.text.toString()
-        val password = binding.passwordInput.text.toString()
-        val fullName = binding.etFullName.text.toString()
-        val city = binding.etCity.text.toString()
-        val age = binding.etBorn.text.toString()
-
-        try {
-            viewModel.registerUser(
-                username = username,
-                name = fullName,
-                password = password,
-                age = age,
-                email = email,
-                city = city,
-                preferedCategory = " "
-            )
-        } catch (e: Exception) {
-            Toast.makeText(this, "Registration failed: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        finish()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        navigateToLogin()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

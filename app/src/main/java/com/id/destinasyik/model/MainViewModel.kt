@@ -4,24 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
-import com.id.destinasyik.data.remote.response.BookmarkResponse
+import com.id.destinasyik.data.remote.response.AddBookmarkResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.DeleteResponse
-import com.id.destinasyik.data.remote.response.Destination
+import com.id.destinasyik.data.remote.response.FuelDetailsItem
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
+import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
+import com.id.destinasyik.data.remote.response.PricingResponse
 import com.id.destinasyik.data.remote.response.ProfileResponse
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
+import com.id.destinasyik.data.remote.response.RecommByPeopleLiked
 import com.id.destinasyik.data.remote.response.RegisterResponse
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.data.remote.response.User
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,80 +38,83 @@ class MainViewModel : ViewModel() {
     val placeReccomCategory: LiveData<List<ReccomPlace?>?> = _placeReccomCategory
     private val _placeReccomNearby = MutableLiveData<List<ReccomPlace?>?>()
     val placeReccomNearby: LiveData<List<ReccomPlace?>?> = _placeReccomNearby
+    private val _placeRecommPeopleLiked = MutableLiveData<List<ReccomPlace?>?>()
+    val placeRecommPeopleLiked: LiveData<List<ReccomPlace?>?> = _placeRecommPeopleLiked
     private val _bookmarkedPlace = MutableLiveData<List<BookmarksItem?>?>()
     val bookmarkedPlace: LiveData<List<BookmarksItem?>?> = _bookmarkedPlace
     private val _loadingEvent = MutableLiveData<Boolean>()
     val loadingEvent: LiveData<Boolean> = _loadingEvent
+    private val _bookmarkResponse = MutableLiveData<AddBookmarkResponse>()
+    val bookmarkResponse: LiveData<AddBookmarkResponse> = _bookmarkResponse
+    private val _statusBookmark = MutableLiveData<AddBookmarkResponse>()
+    val statusBookmark: LiveData<AddBookmarkResponse> = _statusBookmark
+
+    private val _likeResponse = MutableLiveData<LikeResponse>()
+    val likeResponse: LiveData<LikeResponse> = _likeResponse
+    private val _statusLike = MutableLiveData<LikeResponse>()
+    val statusLike: LiveData<LikeResponse> = _statusLike
+
+    private val _listCost = MutableLiveData<PricingResponse>()
+    val listCost: LiveData<PricingResponse> = _listCost
 
     fun registerUser (
         username: String,
         name: String,
         password: String,
-        age: String,
         email: String,
+        tanggal_lahir: String,
         city: String,
         preferedCategory: String
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("name", name)
-            addProperty("passsword", password)
-            addProperty("age", age)
+            addProperty("password", password)
             addProperty("email", email)
+            addProperty("tanggal_lahir", tanggal_lahir)
             addProperty("city", city)
             addProperty("prefered_category", preferedCategory)
         }
         val client = ApiConfig.getApiService().registerUser(jsonObject)
-        client.enqueue(object : Callback<RegisterResponse> {
+        client.enqueue(object : Callback<RegisterResponse>{
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful){
                     _registrationStatus.value = true
-                    Log.e("Login Auth", "Succesfully Login")
-                } else {
+                    Log.e("Register Auth", "Succesfully Register")
+                }else{
                     _registrationStatus.value = false
-                    Log.e("Login Auth", "onFailure: ${response.message()}")
+                    Log.e("Register Auth", "onFailure: ${response.message()}")
                 }
             }
-
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _registrationStatus.value = false
                 Log.e("Login Auth", "onFailure: ${t.message.toString()}")
             }
+
         })
     }
 
-    fun loginAuth(username: String, password: String) {
+
+    fun loginAuth(username: String, password: String){
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("password", password)
         }
         val client = ApiConfig.getApiService().loginUser(jsonObject)
-        client.enqueue(object : Callback<LoginResponse> {
+        client.enqueue(object : Callback<LoginResponse>{
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful && response.body()?.token != null) {
+                if (response.isSuccessful){
                     _login.value = response.body()
-                    Log.d("Login Auth", "Successfully Login")
-                } else {
-                    Log.e("Login Auth", "Login failed: ${response.code()} - ${response.message()}")
-                    Log.e("Login Auth", "Response body: ${response.errorBody()?.string()}")
-                    
-                    _login.value = LoginResponse(
-                        message = response.body()?.message ?: "Invalid credentials",
-                        user = null,
-                        token = null
-                    )
+                    Log.e("Login Auth", "Succesfully Login")
+                }else{
+                    Log.e("Login Auth", "onFailure: ${response.message()}")
                 }
             }
-
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("Login Auth", "onFailure: ${t.message.toString()}")
-                _login.value = LoginResponse(
-                    message = "Network error: ${t.message}",
-                    user = null,
-                    token = null
-                )
             }
         })
+
     }
 
     fun getProfile(authToken: String){
@@ -135,12 +139,12 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun updateProfile(username: String, name: String, age: Int, email: String, city: String, preferedCategory: String, authToken: String){
+    fun updateProfile(username: String, name: String, email: String, tanggal_lahir: String, city: String, preferedCategory: String, authToken: String){
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("name", name)
-            addProperty("age", age)
             addProperty("email", email)
+            addProperty("tanggal_lahir", tanggal_lahir)
             addProperty("city", city)
             addProperty("prefered_category", preferedCategory)
         }
@@ -228,6 +232,30 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    fun recommPeopleLiked(authToken: String){
+        _loadingEvent.value=true
+        val client = ApiConfig.getApiService().recomPeopleLiked(authToken)
+        client.enqueue(object: Callback<RecommByPeopleLiked>{
+            override fun onResponse(
+                call: Call<RecommByPeopleLiked>,
+                response: Response<RecommByPeopleLiked>
+            ) {
+                if(response.isSuccessful){
+                    _loadingEvent.value=false
+                    _placeRecommPeopleLiked.value=response.body()?.recommPeopleLiked
+                    Log.e("Recom Place", "Succesfully Recom By People Liked")
+                }else{
+                    Log.e("Recom Place", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RecommByPeopleLiked>, t: Throwable) {
+                Log.e("Recom Place", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+
+    }
 
     //Bookmark Secction
     fun addBookmark(authToken: String, itemId: Int){
@@ -235,19 +263,46 @@ class MainViewModel : ViewModel() {
             addProperty("item_id", itemId)
         }
         val client = ApiConfig.getApiService().addBookmark(authToken, jsonObject)
-        client.enqueue(object: Callback<BookmarkResponse>{
+        client.enqueue(object: Callback<AddBookmarkResponse>{
             override fun onResponse(
-                call: Call<BookmarkResponse>,
-                response: Response<BookmarkResponse>
+                call: Call<AddBookmarkResponse>,
+                response: Response<AddBookmarkResponse>
             ) {
                 if (response.isSuccessful){
+                    _bookmarkResponse.value=response.body()
+                    _statusBookmark.value=response.body()
                     Log.e("Bookmark", "Succesfully Bookmark Place")
                 }else{
                     Log.e("Bookmark", "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<BookmarkResponse>, t: Throwable) {
+            override fun onFailure(call: Call<AddBookmarkResponse>, t: Throwable) {
+                Log.e("Bookmark", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Bookmark Secction
+    fun statusBookmark(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addBookmark(authToken, jsonObject)
+        client.enqueue(object: Callback<AddBookmarkResponse>{
+            override fun onResponse(
+                call: Call<AddBookmarkResponse>,
+                response: Response<AddBookmarkResponse>
+            ) {
+                if (response.isSuccessful){
+                    addBookmark(authToken, itemId)
+                    Log.e("Bookmark", "Succesfully Bookmark Place")
+                }else{
+                    Log.e("Bookmark", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AddBookmarkResponse>, t: Throwable) {
                 Log.e("Bookmark", "onFailure: ${t.message.toString()}")
             }
         })
@@ -275,26 +330,81 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun deleteBookmark(authToken: String, id:Int){
-        val client = ApiConfig.getApiService().deleteBookmark(authToken, id)
-        client.enqueue(object: Callback<DeleteResponse>{
+    //Like Section
+    //Bookmark Secction
+    fun addLikes(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addLike(authToken, jsonObject)
+        client.enqueue(object: Callback<LikeResponse>{
             override fun onResponse(
-                call: Call<DeleteResponse>,
-                response: Response<DeleteResponse>
+                call: Call<LikeResponse>,
+                response: Response<LikeResponse>
             ) {
                 if (response.isSuccessful){
-                    Log.e("Bookmark", "Succesfully Delete Bookmarked Place")
+                    _likeResponse.value=response.body()
+                    _statusLike.value=response.body()
+                    Log.e("Like", "Succesfully Like Place")
                 }else{
-                    Log.e("Bookmark", "onFailure: ${response.message()}")
+                    Log.e("Like", "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<DeleteResponse>, t: Throwable) {
-                Log.e("Bookmark", "onFailure: ${t.message.toString()}")
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
+                Log.e("Like", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Bookmark Secction
+    fun statusLikes(authToken: String, itemId: Int){
+        val jsonObject = JsonObject().apply {
+            addProperty("item_id", itemId)
+        }
+        val client = ApiConfig.getApiService().addLike(authToken, jsonObject)
+        client.enqueue(object: Callback<LikeResponse>{
+            override fun onResponse(
+                call: Call<LikeResponse>,
+                response: Response<LikeResponse>
+            ) {
+                if (response.isSuccessful){
+                    addLikes(authToken, itemId)
+                    Log.e("Like", "Succesfully Fetch Status Like Place")
+                }else{
+                    Log.e("Like", "onFailure: ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
+                Log.e("Like", "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    //Pricing Section
+    fun getPricing(authToken: String, itemId: Int, latitude: Double, longitude: Double){
+        val jsonObject = JsonObject().apply {
+            addProperty("userLat", latitude)
+            addProperty("userLon", longitude)
+        }
+        val client = ApiConfig.getApiService().fuelPricing(authToken, jsonObject, itemId)
+        client.enqueue(object: Callback<PricingResponse>{
+            override fun onResponse(
+                call: Call<PricingResponse>,
+                response: Response<PricingResponse>
+            ) {
+                if (response.isSuccessful){
+                    _listCost.value=response.body()
+                    Log.e("Travel Cost", "Succesfully Fetch Travel Cost")
+                }else{
+                    Log.e("Travel Cost", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<PricingResponse>, t: Throwable) {
+                Log.e("Travel Cost", "onFailure: ${t.message.toString()}")
             }
 
         })
     }
-
-
 }
