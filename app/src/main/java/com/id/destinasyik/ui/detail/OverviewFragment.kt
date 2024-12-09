@@ -28,5 +28,4 @@ class OverviewFragment : Fragment() {
         }
         return binding.root
     }
-
 }

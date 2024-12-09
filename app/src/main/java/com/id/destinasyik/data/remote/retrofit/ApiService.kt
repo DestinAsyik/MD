@@ -2,7 +2,10 @@ package com.id.destinasyik.data.remote.retrofit
 
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
+import com.id.destinasyik.data.remote.response.AddReviewResponse
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
+import com.id.destinasyik.data.remote.response.GetReviewResponse
+import com.id.destinasyik.data.remote.response.GetReviewResponseItem
 import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
@@ -12,6 +15,7 @@ import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RecommByPeopleLiked
 import com.id.destinasyik.data.remote.response.RegisterResponse
+import com.id.destinasyik.data.remote.response.SearchResponse
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import retrofit2.Call
 import retrofit2.http.Body
@@ -19,6 +23,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     //User Section
@@ -91,4 +96,26 @@ interface ApiService {
         @Body jsonObject: JsonObject,
         @Path("item_id") itemId: Int
     ): Call<PricingResponse>
+
+    //Review
+    @POST("reviews/destination/{item_id}")
+    fun addReview(
+        @Header("Authorization") authToken: String,
+        @Body jsonObject: JsonObject,
+        @Path("item_id") itemId: Int
+    ): Call<AddReviewResponse>
+
+    @GET("reviews/destination/getreviews/{item_id}")
+    fun getPlaceReviews(
+        @Header("Authorization") authToken: String,
+        @Path("item_id") itemId: Int
+    ): Call<List<GetReviewResponseItem>>
+
+    //Search
+    @GET("search")
+    suspend fun searchDestinations(
+        @Header("Authorization") authToken: String,
+        @Query("key") key: String,
+        @Query("page") page: Int,
+    ): SearchResponse
 }

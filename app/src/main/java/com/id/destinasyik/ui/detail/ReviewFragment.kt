@@ -1,60 +1,119 @@
 package com.id.destinasyik.ui.detail
 
+import android.annotation.SuppressLint
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.id.destinasyik.R
+import com.id.destinasyik.data.remote.response.ReccomPlace
+import com.id.destinasyik.databinding.FragmentPricingBinding
+import com.id.destinasyik.databinding.FragmentReviewBinding
+import com.id.destinasyik.model.MainViewModel
+import com.id.destinasyik.ui.recomended.RecommendedAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ReviewFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ReviewFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentReviewBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var viewModel: MainViewModel
+    private lateinit var location: Location
+    private lateinit var reviewAdapter: ReviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_review, container, false)
+        _binding = FragmentReviewBinding.inflate(layoutInflater,container,false)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        getLastLocation()
+        setupRecycleView()
+        loadData()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ReviewFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ReviewFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun loadData(){
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        val place: ReccomPlace? = requireActivity().intent.getParcelableExtra("PLACE") as? ReccomPlace
+        place?.itemId?.let { viewModel.getReview(tokenBearer, it) }
+        viewModel.placeReviews.observe(viewLifecycleOwner){response->
+            Log.d("REVIEWS", "$response")
+            reviewAdapter.submitList(response)
+        }
+        binding.btnSendReview.setOnClickListener {
+            val rating = binding.inputRating.rating
+            val review = binding.etReview.text.toString()
+            place?.itemId?.let { it1 ->
+                viewModel.addReview(tokenBearer,
+                    it1, rating, review, location.latitude, location.longitude)
+            }
+        }
+    }
+
+    private fun setupRecycleView() {
+        val recommendedRecyclerView = binding.rcReview
+        reviewAdapter = ReviewAdapter()
+        recommendedRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = reviewAdapter
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation(){
+        if(isLocationPermissionGranted()){
+            val lastLocation = fusedLocationProviderClient.lastLocation
+            lastLocation.addOnSuccessListener {
+                if(it != null){
+                    location=it
+                    Log.d("Current Loc","Latitude : ${it.latitude}, Longitude : ${it.longitude}")
                 }
             }
+
+            lastLocation.addOnFailureListener {
+                Log.d("Current Loc","Failed to get Current Location")
+            }
+        }
     }
+
+
+    private fun isLocationPermissionGranted(): Boolean {
+        return if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                1001
+            )
+            false
+        } else {
+            true
+        }
+    }
+
 }

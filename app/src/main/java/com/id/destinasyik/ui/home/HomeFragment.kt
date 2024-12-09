@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.id.destinasyik.R
@@ -24,6 +26,8 @@ import com.id.destinasyik.ui.recomended.NearestPlaceFragment
 import com.id.destinasyik.ui.liked.PeopleLikedAdapter
 import com.id.destinasyik.ui.login.LoginActivity
 import com.id.destinasyik.ui.recomended.RecommendedAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -31,10 +35,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var peopleAdapter: PeopleLikedAdapter
     private lateinit var viewModel: MainViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,19 +60,16 @@ class HomeFragment : Fragment() {
                 // Tidak perlu melakukan apa-apa di sini
             }
         })
+        setupPeopleLikedRecyclerView()
+        loadData()
+        setupSearch()
+        setupProfileClickListener()
         viewModel.loadingEvent.observe(viewLifecycleOwner){
             loadingPage(it)
         }
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupPeopleLikedRecyclerView()
-        loadData()
-        setupSearch()
-        setupProfileClickListener()
-    }
 
     private fun setupProfileClickListener() {
         binding.profileLayout.setOnClickListener {
@@ -103,8 +100,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupSearch() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
         val rvSearch = binding.rvSearch
-        val adapterSearch = RecommendedAdapter()
+        val adapterSearch = PlacePagingAdapter()
         rvSearch.apply {
             adapter = adapterSearch
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -117,10 +117,16 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val searchText = p0.toString()
                 if(searchText.isNullOrEmpty()){
-                    adapterSearch.submitList(emptyList())
+                    lifecycleScope.launch {
+                        adapterSearch.submitData(PagingData.empty())
+                    }
                 }else{
                     Log.d("Search Keyword","$searchText")
-
+                    lifecycleScope.launch {
+                        viewModel.searchDestination(tokenBearer,searchText).collectLatest {response->
+                            adapterSearch.submitData(response)
+                        }
+                    }
                 }
             }
 
