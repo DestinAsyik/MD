@@ -78,8 +78,8 @@ class MainViewModel : ViewModel() {
         username: String,
         name: String,
         password: String,
-        age: String,
         email: String,
+        tanggal_lahir: String,
         city: String,
         preferedCategory: String
     ) {
@@ -87,8 +87,8 @@ class MainViewModel : ViewModel() {
             addProperty("username", username)
             addProperty("name", name)
             addProperty("password", password)
-            addProperty("age", age)
             addProperty("email", email)
+            addProperty("tanggal_lahir", tanggal_lahir)
             addProperty("city", city)
             addProperty("prefered_category", preferedCategory)
         }
@@ -156,12 +156,12 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun updateProfile(username: String, name: String, age: Int, email: String, city: String, preferedCategory: String, authToken: String){
+    fun updateProfile(username: String, name: String, email: String, tanggal_lahir: String, city: String, preferedCategory: String, authToken: String){
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("name", name)
-            addProperty("age", age)
             addProperty("email", email)
+            addProperty("tanggal_lahir", tanggal_lahir)
             addProperty("city", city)
             addProperty("prefered_category", preferedCategory)
         }

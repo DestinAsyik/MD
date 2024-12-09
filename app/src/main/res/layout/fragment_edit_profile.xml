@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.EditProfileFragment">
+
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_profile"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.79" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="141dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/profile_dummy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="33dp"
+        android:layout_height="30dp"
+        android:src="@drawable/baseline_camera_alt_24"
+        tools:layout_editor_absoluteX="243dp"
+        tools:layout_editor_absoluteY="205dp" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:fontFamily="@font/inter_regular"
+        android:hint="@string/your_name"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        android:textColor="#9A9A9A"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView9"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    <EditText
+        android:id="@+id/etBorn"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
+        android:drawableStart="@drawable/date"
+        android:ems="10"
+        android:fontFamily="@font/inter_regular"
+        android:inputType="date"
+        android:padding="15dp"
+        android:text="Born"
+        android:textColor="#9A9A9A"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/etName"
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:fontFamily="@font/inter_regular"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        android:textColor="#9A9A9A"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/etBorn"
+        app:layout_constraintTop_toBottomOf="@+id/etBorn" />
+
+    <EditText
+        android:id="@+id/etCity"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:fontFamily="@font/inter_regular"
+        android:inputType="text"
+        android:padding="15dp"
+        android:text="@string/city"
+        android:textColor="#9A9A9A"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/etEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+
+    <EditText
+        android:id="@+id/etTravel"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:fontFamily="@font/inter_regular"
+        android:inputType="text"
+        android:padding="15dp"
+        android:text="@string/travel_preferences"
+        android:textColor="#9A9A9A"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/etCity"
+        app:layout_constraintTop_toBottomOf="@+id/etCity" />
+
+    <Button
+        android:id="@+id/button_edit_profile"
+        android:layout_width="348dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#336749"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/change1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

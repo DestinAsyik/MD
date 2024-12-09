@@ -27,4 +27,26 @@
     <string name="password_conf">Password Confirmation</string>
     <string name="change">Change Password</string>
     <string name="password_requirement">Password Requirement:</string>
+    <string name="const_text_auth_question_login">Need an account?</string>
+    <string name="const_text_register"><u>Create One</u></string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="requirement1">"At least 8 Characters "</string>
+    <string name="requirement2">No Part Of your Username</string>
+    <string name="requirement3">Your Password Cannot Be any your last 4\nPasswords.</string>
+    <string name="headline">Explore the\nBeautiful world!</string>
+    <string name="recommend">Recommend</string>
+    <string name="show_more">Show more ›</string>
+    <string name="people_liked">People Liked</string>
+    <string name="sign_in">Sign In</string>
+    <string name="category">Category</string>
+    <string name="nearest_place">Nearest Place</string>
+    <string name="success">Success!</string>
+    <string name="deskripsi2">Congratulations! You have been succesfull update your password</string>
+    <string name="continue1">Continue</string>
+    <string name="continue2">Continue</string>
+    <string name="your_name">Your Name</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="travel_preferences">Travel Preferences</string>
+    <string name="change1">Change</string>
+    <string name="full_name">Full Name</string>
 </resources>

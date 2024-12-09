@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.verification.VerificationFragment">
+
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:src="@drawable/success"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inter_bold"
+        android:text="@string/success"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="308dp"
+        android:layout_height="41dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="@string/deskripsi2"
+        android:gravity="center"
+        android:textColor="#969696"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="301dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/continue2"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:backgroundTint="#336749"
+        android:background="@drawable/button_ver"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+</androidx.constraintlayout.widget.ConstraintLayout>
