@@ -46,19 +46,11 @@ class PricingFragment : Fragment() {
         val place: ReccomPlace? = requireActivity().intent.getParcelableExtra("PLACE") as? ReccomPlace
         place?.itemId?.let { viewModel.getPricing(tokenBearer, it, latitude, longitude ) }
         viewModel.listCost.observe(viewLifecycleOwner){response->
-            binding.ticketPrice.text= response.ticketPrice?.let { formatRupiah(it) }
-            binding.tvPertalitePrice.text= response.fuelDetails?.get(0)?.fuelCost?.let {
-                formatRupiah(
-                    it
-                )
-            }
-            binding.tvPertamaxPrice.text= response.fuelDetails?.get(1)?.fuelCost?.let {
-                formatRupiah(
-                    it
-                )
-            }
-            binding.tvSolarPrice.text= response.fuelDetails?.get(2)?.fuelCost?.let { formatRupiah(it) }
-            val distancePlace = response.distance+" Km"
+            binding.ticketPrice.text= response.ticketPrice
+            binding.tvPertalitePrice.text= response.fuelDetails?.get(0)?.fuelCost
+            binding.tvPertamaxPrice.text= response.fuelDetails?.get(1)?.fuelCost
+            binding.tvSolarPrice.text= response.fuelDetails?.get(2)?.fuelCost
+            val distancePlace = response.distance
             binding.solarRange.text=distancePlace
             binding.pertaliteRange.text=distancePlace
             binding.pertamaxRange.text=distancePlace
@@ -104,10 +96,5 @@ class PricingFragment : Fragment() {
         } else {
             true
         }
-    }
-
-    fun formatRupiah(value: String): String {
-        val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
-        return numberFormat.format(value.toDouble())
     }
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.databinding.ItemLikedPlaceBinding
@@ -16,6 +17,9 @@ class BookmarkAdapter() : ListAdapter<BookmarksItem, BookmarkAdapter.MyViewHolde
 
     class MyViewHolder(val binding: ItemLikedPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(place: BookmarksItem) {
+            Glide.with(binding.placeImage.context)
+                .load(place.destination?.gambar)
+                .into(binding.placeImage)
             binding.placeName.text=place.destination?.placeName
             binding.placeLocation.text=place.destination?.city
             binding.ratingText.text=place.destination?.ratingAvg.toString()

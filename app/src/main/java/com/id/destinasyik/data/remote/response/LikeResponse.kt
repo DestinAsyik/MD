@@ -15,7 +15,6 @@ data class LikeResponse(
 )
 
 data class Data(
-
 	@field:SerializedName("isLiked")
 	val isLiked: Boolean? = null
 )

@@ -4,12 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.google.gson.JsonObject
+import com.id.destinasyik.data.paging.PlacePagingSource
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
+import com.id.destinasyik.data.remote.response.AddReviewResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.DeleteResponse
 import com.id.destinasyik.data.remote.response.FuelDetailsItem
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
+import com.id.destinasyik.data.remote.response.GetReviewResponse
+import com.id.destinasyik.data.remote.response.GetReviewResponseItem
 import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.data.remote.response.LogoutResponse
@@ -20,9 +29,11 @@ import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RecommByPeopleLiked
 import com.id.destinasyik.data.remote.response.RegisterResponse
+import com.id.destinasyik.data.remote.response.ResultsItem
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.data.remote.response.User
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,6 +67,12 @@ class MainViewModel : ViewModel() {
 
     private val _listCost = MutableLiveData<PricingResponse>()
     val listCost: LiveData<PricingResponse> = _listCost
+
+    private val _addReview = MutableLiveData<AddReviewResponse>()
+    val addReview: LiveData<AddReviewResponse> = _addReview
+
+    private val _placeReviews = MutableLiveData<List<GetReviewResponseItem?>?>()
+    val placeReviews: LiveData<List<GetReviewResponseItem?>?> = _placeReviews
 
     fun registerUser (
         username: String,
@@ -406,5 +423,66 @@ class MainViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun addReview(authToken: String, itemId: Int, rating: Float, review: String, latitude: Double, longitude: Double){
+        val jsonObject = JsonObject().apply {
+            addProperty("rating", rating)
+            addProperty("review", review)
+            addProperty("userLat", latitude)
+            addProperty("userLon", longitude)
+        }
+        val client = ApiConfig.getApiService().addReview(authToken, jsonObject, itemId)
+        client.enqueue(object: Callback<AddReviewResponse>{
+            override fun onResponse(
+                call: Call<AddReviewResponse>,
+                response: Response<AddReviewResponse>
+            ) {
+                if (response.isSuccessful){
+                    _addReview.value = response.body()
+                    Log.e("Travel Cost", "Succesfully Fetch Travel Cost")
+                }else{
+                    Log.e("Travel Cost", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AddReviewResponse>, t: Throwable) {
+                Log.e("Travel Cost", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    fun getReview(authToken: String, itemId: Int){
+        val client = ApiConfig.getApiService().getPlaceReviews(authToken, itemId)
+        client.enqueue(object: Callback<List<GetReviewResponseItem>>{
+            override fun onResponse(
+                call: Call<List<GetReviewResponseItem>>,
+                response: Response<List<GetReviewResponseItem>>
+            ) {
+                if (response.isSuccessful){
+                    _placeReviews.value=response.body()
+                    Log.e("Reviews", "Succesfully Get Reviews")
+                }else{
+                    Log.e("Reviews", "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<GetReviewResponseItem>>, t: Throwable) {
+                Log.e("Reviews", "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    //search destination
+    fun searchDestination(authToken: String, keyword: String): Flow<PagingData<ReccomPlace>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20, // Ukuran halaman
+                enablePlaceholders = false // Jangan gunakan placeholder
+            ),
+            pagingSourceFactory = { PlacePagingSource(keyword, authToken) }
+        ).flow.cachedIn(viewModelScope)
     }
 }

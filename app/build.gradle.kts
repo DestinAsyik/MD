@@ -61,4 +61,6 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.play.services.location)
     implementation (libs.glide)
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.common)
 }

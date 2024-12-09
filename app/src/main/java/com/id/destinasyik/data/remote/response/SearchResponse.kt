@@ -1,41 +1,24 @@
 package com.id.destinasyik.data.remote.response
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class RecommByCategoryResponse(
-
-	@field:SerializedName("preferredCategory")
-	val preferredCategory: String? = null,
-
-	@field:SerializedName("reccomByContent")
-	val reccomByContent: List<ReccomPlace?>? = null,
-
-	@field:SerializedName("message")
-	val message: String? = null
-)
-
-data class RecommByNearbyResponse(
+data class SearchResponse(
 
 	@field:SerializedName("data")
-	val reccomByJarak: List<ReccomPlace?>? = null,
+	val data: PageData? = null,
 
 	@field:SerializedName("message")
-	val message: String? = null
-)
+	val message: String? = null,
 
-data class RecommByPeopleLiked(
-
-	@field:SerializedName("recommendations")
-	val recommPeopleLiked: List<ReccomPlace?>? = null,
-
-	@field:SerializedName("message")
-	val message: String? = null
+	@field:SerializedName("status")
+	val status: String? = null
 )
 
 @Parcelize
-data class ReccomPlace(
+data class ResultsItem(
 
 	@field:SerializedName("place_name")
 	val placeName: String? = null,
@@ -73,3 +56,19 @@ data class ReccomPlace(
 	@field:SerializedName("longitude")
 	val longitude: Double? = null
 ):Parcelable
+
+
+data class PageData(
+	@field:SerializedName("totalItems")
+	val totalItems: Int? = null,
+
+	@field:SerializedName("totalPages")
+	val totalPages: Int? = null,
+
+	@field:SerializedName("currentPage")
+	val currentPage: Int? = null,
+
+	@field:SerializedName("results")
+	val results: List<ReccomPlace?>? = null
+)
+
