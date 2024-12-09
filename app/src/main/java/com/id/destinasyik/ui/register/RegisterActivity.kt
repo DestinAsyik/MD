@@ -1,50 +1,108 @@
 package com.id.destinasyik.ui.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.id.destinasyik.R
 import com.id.destinasyik.databinding.ActivityRegisterBinding
 import com.id.destinasyik.model.MainViewModel
+import com.id.destinasyik.ui.login.LoginActivity
+import java.util.Calendar
+import android.app.DatePickerDialog
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityRegisterBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        setupDatePicker()
+        setupRegisterButton()
+        observeRegistrationStatus()
+    }
+
+    private fun setupDatePicker() {
+        binding.etBorn.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Format the date as YYYY-MM-DD (common backend format)
+                    val formattedDay = String.format("%02d", selectedDay)
+                    val formattedMonth = String.format("%02d", selectedMonth + 1)
+                    val selectedDate = "$selectedYear-$formattedMonth-$formattedDay"
+                    binding.etBorn.setText(selectedDate)
+                },
+                year,
+                month,
+                day
+            ).show()
+        }
+    }
+
+    private fun setupRegisterButton() {
         binding.buttonRegister.setOnClickListener {
             val username = binding.etUsername.text.toString()
-            val password = binding.passwordInput.text.toString()
             val email = binding.etEmail.text.toString()
+            val password = binding.passwordInput.text.toString()
             val passwordConfirmation = binding.passwordConfirmation.text.toString()
             val city = binding.etCity.text.toString()
-            val age = binding.etBorn.text.toString()
-            val firstName = binding.etFirstName.text.toString()
-            val lastName = binding.etLastName.text.toString()
-            val name = firstName+" "+lastName
-            val preferedCategory: String? = null
-            if(password == passwordConfirmation){
-                preferedCategory?.let { prefered ->
-                    viewModel.registerUser(username, name, password, age, email, city,
-                        prefered
+            val tanggalLahir = binding.etBorn.text.toString() // This will be in format "DD/MM/YYYY"
+            val name = binding.etFullName.text.toString()
+
+            // Input validation
+            when {
+                username.isEmpty() -> showToast("Username cannot be empty")
+                email.isEmpty() -> showToast("Email cannot be empty")
+                password.isEmpty() -> showToast("Password cannot be empty")
+                passwordConfirmation.isEmpty() -> showToast("Password confirmation cannot be empty")
+                city.isEmpty() -> showToast("City cannot be empty")
+                tanggalLahir == "Born" || tanggalLahir.isEmpty() -> showToast("Date of birth cannot be empty")
+                name.isEmpty() -> showToast("Name cannot be empty")
+                password != passwordConfirmation -> showToast("Passwords do not match")
+                else -> {
+                    // Default preferred category if none selected
+                    val preferredCategory = "Nature" // You can modify this as needed
+
+                    // Proceed with registration
+                    viewModel.registerUser(
+                        username = username,
+                        name = name,
+                        password = password,
+                        tanggal_lahir = tanggalLahir,
+                        email = email,
+                        city = city,
+                        preferedCategory = preferredCategory
                     )
                 }
-            }else{
-                Toast.makeText(this@RegisterActivity, "Password Not The Same", Toast.LENGTH_SHORT).show()
             }
-            viewModel.registrationStatus.observe(this, Observer { isRegistered->
-                if(isRegistered){
-                    Toast.makeText(this@RegisterActivity, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-                }
-            })
         }
+    }
+
+    private fun observeRegistrationStatus() {
+        viewModel.registrationStatus.observe(this) { isRegistered ->
+            if (isRegistered) {
+                showToast("Registration successful!")
+                // Navigate to login screen
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            } else {
+                showToast("Registration failed. Please try again.")
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
