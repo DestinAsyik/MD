@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -52,17 +53,62 @@ class ReviewFragment : Fragment() {
         val place: ReccomPlace? = requireActivity().intent.getParcelableExtra("PLACE") as? ReccomPlace
         place?.itemId?.let { viewModel.getReview(tokenBearer, it) }
         viewModel.placeReviews.observe(viewLifecycleOwner){response->
-            Log.d("REVIEWS", "$response")
             reviewAdapter.submitList(response)
+            var totalRating = 0f
+            var totalReviews = 0
+            val ratingCount = mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0)
+            response?.forEach {review->
+                review?.rating?.let{
+                    val roundedRating = roundToNearestHalf(it)
+                    totalRating += it
+                    totalReviews++
+                    if (roundedRating in 1..5) {
+                        ratingCount[roundedRating] = ratingCount[roundedRating]?.plus(1) ?: 1
+                    }
+                }
+            }
+            Log.d("TOTAL RATING","$totalRating")
+            val averageRating = totalRating.div(totalReviews)
+            binding.ratingText.text=averageRating.toString()
+            binding.tvRating.rating=averageRating
+            binding.totalReview.text="( $totalReviews )"
+            binding.oneStarBar.progress= ratingCount[1]?.let { calculatePrecentage(it, totalReviews) }!!
+            binding.twoStarBar.progress= ratingCount[2]?.let { calculatePrecentage(it, totalReviews) }!!
+            binding.threeStarBar.progress= ratingCount[3]?.let { calculatePrecentage(it, totalReviews) }!!
+            binding.fourStarBar.progress= ratingCount[4]?.let { calculatePrecentage(it, totalReviews) }!!
+            binding.fiveStarBar.progress= ratingCount[5]?.let { calculatePrecentage(it, totalReviews) }!!
         }
         binding.btnSendReview.setOnClickListener {
             val rating = binding.inputRating.rating
             val review = binding.etReview.text.toString()
-            place?.itemId?.let { it1 ->
-                viewModel.addReview(tokenBearer,
-                    it1, rating, review, location.latitude, location.longitude)
+            when{
+                rating.isNaN()->showToast("Rating cannot be empty")
+                review.isEmpty()->showToast("Review cannot be empty")
+                else->{
+                    place?.itemId?.let { it1 ->
+                        viewModel.addReview(tokenBearer,
+                            it1, rating, review, location.latitude, location.longitude)
+                        viewModel.reviewErrorStatus.observe(viewLifecycleOwner){errorMessage->
+                            if(errorMessage.isEmpty()){
+                                showToast("Succesfully Add Review")
+                            }else{
+                                showToast(errorMessage)
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private fun calculatePrecentage(count: Int, total: Int): Int{
+        val precentage = count.div(total)*100
+        return precentage
+    }
+
+    private fun roundToNearestHalf(rating: Float): Int {
+        val rounded = (rating * 2).toInt() // Mengalikan rating dengan 2 dan membulatkannya ke bawah
+        return (rounded / 2) // Membagi kembali untuk mendapatkan kategori yang dibulatkan
     }
 
     private fun setupRecycleView() {
@@ -114,6 +160,10 @@ class ReviewFragment : Fragment() {
         } else {
             true
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
 }

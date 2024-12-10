@@ -22,9 +22,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
         setupDatePicker()
         setupRegisterButton()
         observeRegistrationStatus()

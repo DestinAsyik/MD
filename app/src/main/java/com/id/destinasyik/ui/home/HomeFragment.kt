@@ -63,21 +63,11 @@ class HomeFragment : Fragment() {
         setupPeopleLikedRecyclerView()
         loadData()
         setupSearch()
-        //setupProfileClickListener()
         viewModel.loadingEvent.observe(viewLifecycleOwner){
             loadingPage(it)
         }
         return binding?.root
     }
-
-
-    /*private fun setupProfileClickListener() {
-        binding.profileLayout.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            startActivity(intent)
-        }
-    }*/
-
 
     private fun setupPeopleLikedRecyclerView() {
         val peopleRecyclerView = binding.peopleLikedRecyclerView
@@ -93,6 +83,7 @@ class HomeFragment : Fragment() {
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token",null)
         val tokenBearer = "Bearer "+token
+        loadUserProfile()
         viewModel.recommPeopleLiked(tokenBearer)
         viewModel.placeRecommPeopleLiked.observe(viewLifecycleOwner){places->
             peopleAdapter.submitList(places)
@@ -135,6 +126,19 @@ class HomeFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun loadUserProfile() {
+        val sharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", "") ?: ""
+        if (token.isNotEmpty()) {
+            viewModel.getProfile("Bearer $token")
+            viewModel.profile.observe(viewLifecycleOwner) { user ->
+                user?.let {
+                    binding.userGreet.text="Selamat Datang,\n"+user.username
+                }
+            }
+        }
     }
 
     private fun showFragment(fragment: Fragment) {

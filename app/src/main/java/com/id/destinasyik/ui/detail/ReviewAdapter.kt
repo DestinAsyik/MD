@@ -1,17 +1,12 @@
 package com.id.destinasyik.ui.detail
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.GetReviewResponseItem
-import com.id.destinasyik.databinding.ItemLikedPlaceBinding
 import com.id.destinasyik.databinding.ItemReviewBinding
-import com.id.destinasyik.ui.bookmark.BookmarkAdapter
 
 class ReviewAdapter: ListAdapter<GetReviewResponseItem, ReviewAdapter.MyViewHolder>(DIFF_CALLBACK) {
 

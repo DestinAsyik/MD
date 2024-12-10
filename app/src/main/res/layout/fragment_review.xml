@@ -58,7 +58,10 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toEndOf="@id/fivestar"
-            app:layout_constraintTop_toTopOf="@id/fivestar" />
+            app:layout_constraintTop_toTopOf="@id/fivestar"
+            android:progress="0"
+            android:max="100"
+            android:indeterminate="false"/>
         <TextView
             android:id="@+id/fourstar"
             android:layout_width="wrap_content"
@@ -77,6 +80,9 @@
             app:layout_constraintTop_toTopOf="@id/fourstar"
             android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
+            android:progress="0"
+            android:max="100"
+            android:indeterminate="false"
             />
         <TextView
             android:id="@+id/threestar"
@@ -96,6 +102,9 @@
             app:layout_constraintTop_toTopOf="@id/threestar"
             android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
+            android:progress="0"
+            android:max="100"
+            android:indeterminate="false"
             />
         <TextView
             android:id="@+id/twostar"
@@ -115,6 +124,9 @@
             app:layout_constraintTop_toTopOf="@id/twostar"
             android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
+            android:progress="0"
+            android:max="100"
+            android:indeterminate="false"
             />
         <TextView
             android:id="@+id/onestar"
@@ -134,6 +146,9 @@
             app:layout_constraintTop_toTopOf="@id/onestar"
             android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
+            android:progress="0"
+            android:max="100"
+            android:indeterminate="false"
             />
         <!--    Rating User Section-->
         <TextView
@@ -164,7 +179,7 @@
             app:layout_constraintStart_toEndOf="@id/userImage"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             android:layout_marginTop="16dp"
-            android:stepSize="1"
+            android:stepSize="0.5"
             android:layout_marginStart="8dp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField"
