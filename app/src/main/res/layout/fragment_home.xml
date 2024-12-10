@@ -17,7 +17,7 @@
             >
 
             <!-- Profile Section -->
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -37,14 +37,15 @@
                         android:scaleType="centerCrop"/>
 
                     <TextView
+                        android:id="@+id/profileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sign In"
+                        android:text="User"
                         android:layout_marginStart="8dp"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <!-- Explore Text -->
             <TextView

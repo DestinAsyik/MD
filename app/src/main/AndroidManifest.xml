@@ -41,6 +41,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="false"
             android:launchMode="singleTop" />

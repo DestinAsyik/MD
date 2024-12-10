@@ -1,23 +1,23 @@
 package com.id.destinasyik.model
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.google.gson.JsonObject
+import com.id.destinasyik.data.local.AppDatabase
+import com.id.destinasyik.data.local.entity.UserProfile
 import com.id.destinasyik.data.paging.PlacePagingSource
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
 import com.id.destinasyik.data.remote.response.AddReviewResponse
 import com.id.destinasyik.data.remote.response.BookmarksItem
-import com.id.destinasyik.data.remote.response.DeleteResponse
-import com.id.destinasyik.data.remote.response.FuelDetailsItem
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
-import com.id.destinasyik.data.remote.response.GetReviewResponse
 import com.id.destinasyik.data.remote.response.GetReviewResponseItem
 import com.id.destinasyik.data.remote.response.LikeResponse
 import com.id.destinasyik.data.remote.response.LoginResponse
@@ -29,16 +29,18 @@ import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RecommByPeopleLiked
 import com.id.destinasyik.data.remote.response.RegisterResponse
-import com.id.destinasyik.data.remote.response.ResultsItem
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.data.remote.response.User
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+    private val userProfileDao = AppDatabase.getDatabase(application).userProfileDao()
+
     private val _login = MutableLiveData<LoginResponse>()
     val login: LiveData<LoginResponse> = _login
     private val _registrationStatus = MutableLiveData<Boolean>()
@@ -73,6 +75,18 @@ class MainViewModel : ViewModel() {
 
     private val _placeReviews = MutableLiveData<List<GetReviewResponseItem?>?>()
     val placeReviews: LiveData<List<GetReviewResponseItem?>?> = _placeReviews
+
+    private val _userProfile = MutableLiveData<ProfileResponse>()
+    val userProfile: LiveData<ProfileResponse> = _userProfile
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
+    private val _successMessage = MutableLiveData<String?>()
+    val successMessage: LiveData<String?> = _successMessage
 
     fun registerUser (
         username: String,
@@ -156,27 +170,44 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun updateProfile(username: String, name: String, email: String, tanggal_lahir: String, city: String, preferedCategory: String, authToken: String){
+    fun updateProfile(
+        username: String,
+        name: String,
+        email: String,
+        dateOfBirth: String,
+        city: String,
+        preferredCategory: String,
+        authToken: String
+    ) {
+        _isLoading.value = true
         val jsonObject = JsonObject().apply {
             addProperty("username", username)
             addProperty("name", name)
             addProperty("email", email)
-            addProperty("tanggal_lahir", tanggal_lahir)
+            addProperty("tanggal_lahir", dateOfBirth)
             addProperty("city", city)
-            addProperty("prefered_category", preferedCategory)
+            addProperty("prefered_category", preferredCategory)
         }
+
         val client = ApiConfig.getApiService().updateProfile(authToken, jsonObject)
-        client.enqueue(object: Callback<UpdateProfile>{
-            override fun onResponse(call: Call<UpdateProfile>, response: Response<UpdateProfile>) {
-                if (response.isSuccessful){
-                    Log.e("User Profile", "Succesfully Update Profile")
-                }else{
-                    Log.e("User Profile", "onFailure: ${response.message()}")
+        client.enqueue(object : Callback<UpdateProfile> {
+            override fun onResponse(
+                call: Call<UpdateProfile>,
+                response: Response<UpdateProfile>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    fetchUserProfile(authToken)
+                    _successMessage.value = "Profile updated successfully!"
+                    _error.value = null
+                } else {
+                    _error.value = "Failed to update profile: ${response.message()}"
                 }
             }
 
             override fun onFailure(call: Call<UpdateProfile>, t: Throwable) {
-                Log.e("User Profile", "onFailure: ${t.message.toString()}")
+                _isLoading.value = false
+                _error.value = "Error: ${t.message}"
             }
         })
     }
@@ -484,5 +515,39 @@ class MainViewModel : ViewModel() {
             ),
             pagingSourceFactory = { PlacePagingSource(keyword, authToken) }
         ).flow.cachedIn(viewModelScope)
+    }
+
+    fun saveUserProfile(userProfile: UserProfile) {
+        viewModelScope.launch {
+            userProfileDao.insertUserProfile(userProfile)
+        }
+    }
+
+    suspend fun getUserProfile(userId: Int): UserProfile? {
+        return userProfileDao.getUserProfile(userId)
+    }
+
+    fun fetchUserProfile(authToken: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getProfile(authToken)
+        client.enqueue(object : Callback<ProfileResponse> {
+            override fun onResponse(
+                call: Call<ProfileResponse>,
+                response: Response<ProfileResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    _userProfile.value = response.body()
+                    _error.value = null
+                } else {
+                    _error.value = "Failed to fetch profile: ${response.message()}"
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                _isLoading.value = false
+                _error.value = "Error: ${t.message}"
+            }
+        })
     }
 }

@@ -2,6 +2,8 @@ package com.id.destinasyik.ui.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +12,7 @@ import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.login.LoginActivity
 import java.util.Calendar
 import android.app.DatePickerDialog
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -25,6 +28,17 @@ class RegisterActivity : AppCompatActivity() {
         setupDatePicker()
         setupRegisterButton()
         observeRegistrationStatus()
+        setupTravelPreferencesSpinner()
+    }
+
+    private fun setupTravelPreferencesSpinner() {
+        val typePreference = arrayOf(
+            "Budaya", "Taman Hiburan", "Cagar Alam", "Bahari",
+            "Pusat Perbelanjaan", "Tempat Ibadah", "Agrowisata",
+            "Belanja", "Alam", "Rekreasi", "Religius", "Pantai"
+        )
+        
+        (binding.typePreferences as? MaterialAutoCompleteTextView)?.setSimpleItems(typePreference)
     }
 
     private fun setupDatePicker() {
@@ -57,8 +71,9 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.passwordInput.text.toString()
             val passwordConfirmation = binding.passwordConfirmation.text.toString()
             val city = binding.etCity.text.toString()
-            val tanggalLahir = binding.etBorn.text.toString() // This will be in format "DD/MM/YYYY"
+            val tanggalLahir = binding.etBorn.text.toString()
             val name = binding.etFullName.text.toString()
+            val preferredCategory = binding.typePreferences.text.toString()
 
             // Input validation
             when {
@@ -69,11 +84,9 @@ class RegisterActivity : AppCompatActivity() {
                 city.isEmpty() -> showToast("City cannot be empty")
                 tanggalLahir == "Born" || tanggalLahir.isEmpty() -> showToast("Date of birth cannot be empty")
                 name.isEmpty() -> showToast("Name cannot be empty")
+                preferredCategory.isEmpty() -> showToast("Please select travel preferences")
                 password != passwordConfirmation -> showToast("Passwords do not match")
                 else -> {
-                    // Default preferred category if none selected
-                    val preferredCategory = "Nature" // You can modify this as needed
-
                     // Proceed with registration
                     viewModel.registerUser(
                         username = username,
