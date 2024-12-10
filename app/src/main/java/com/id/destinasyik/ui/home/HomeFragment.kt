@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
         setupPeopleLikedRecyclerView()
         loadData()
         setupSearch()
-        setupProfileClickListener()
+        //setupProfileClickListener()
         viewModel.loadingEvent.observe(viewLifecycleOwner){
             loadingPage(it)
         }
@@ -71,12 +71,12 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun setupProfileClickListener() {
+    /*private fun setupProfileClickListener() {
         binding.profileLayout.setOnClickListener {
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
-    }
+    }*/
 
 
     private fun setupPeopleLikedRecyclerView() {

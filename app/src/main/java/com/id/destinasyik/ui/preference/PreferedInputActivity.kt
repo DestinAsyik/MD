@@ -50,10 +50,10 @@ class PreferedInputActivity : AppCompatActivity() {
         viewModel.updateProfile(
             username = "", // These fields will be unchanged
             name = "",
-            tanggal_lahir = "",
+            dateOfBirth = "",
             email = "",
             city = "",
-            preferedCategory = selectedPreferences,
+            preferredCategory = selectedPreferences,
             authToken = "Bearer $token"
         )
 

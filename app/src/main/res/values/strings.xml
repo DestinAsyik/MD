@@ -47,6 +47,8 @@
     <string name="your_name">Your Name</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="travel_preferences">Travel Preferences</string>
-    <string name="change1">Change</string>
     <string name="full_name">Full Name</string>
+    <string name="back_button">Back</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="change1">Save Changes</string>
 </resources>

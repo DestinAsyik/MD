@@ -64,8 +64,8 @@ data class User(
 	@field:SerializedName("prefered_category")
 	val preferedCategory: String? = null,
 
-	@field:SerializedName("age")
-	val age: String? = null,
+	@field:SerializedName("tanggal_lahir")
+	val tanggalLahir: String? = null,
 
 	@field:SerializedName("email")
 	val email: String? = null,
