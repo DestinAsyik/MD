@@ -10,11 +10,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.lifecycle.ViewModelProvider
 import com.id.destinasyik.R
+import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.databinding.FragmentNearestPlaceBinding
 import com.id.destinasyik.databinding.FragmentUserPreferenceBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.MainActivity
 import com.id.destinasyik.ui.login.LoginActivity
+import com.id.destinasyik.ui.profile.EditProfileActivity
+import com.id.destinasyik.ui.register.RegisterActivity
+import com.id.destinasyik.ui.updatepw.UpdatePasswordActivity
 
 class UserPreferenceFragment : Fragment() {
     private var _binding: FragmentUserPreferenceBinding? = null
@@ -29,10 +33,7 @@ class UserPreferenceFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         
         loadUserProfile()
-        
-        binding.btnLogout.setOnClickListener {
-            logout(viewModel)
-        }
+        setupAction()
         return binding.root
     }
 
@@ -65,5 +66,19 @@ class UserPreferenceFragment : Fragment() {
         editor.apply()
         val intent = Intent(requireContext(), LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setupAction(){
+        binding.btnPersonalInfo.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
+
+        binding.btnChangePassword.setOnClickListener {
+            startActivity(Intent(requireContext(), UpdatePasswordActivity::class.java))
+        }
+
+        binding.btnLogout.setOnClickListener {
+            logout(viewModel)
+        }
     }
 }

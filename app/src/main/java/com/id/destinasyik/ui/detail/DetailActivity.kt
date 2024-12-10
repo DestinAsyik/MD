@@ -55,6 +55,9 @@ class DetailActivity : AppCompatActivity() {
         binding.btnLike.setOnClickListener {
             place?.itemId?.let { it1 -> viewModel.addLikes(tokenBearer, it1) }
         }
+        binding.btnBack.setOnClickListener{
+            onBackPressed()
+        }
     }
 
     private fun checkIsBookmarked(authToken: String, place: ReccomPlace?){
