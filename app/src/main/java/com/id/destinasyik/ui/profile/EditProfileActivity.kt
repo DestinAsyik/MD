@@ -19,7 +19,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.hide()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         setupBackButton()
@@ -60,8 +60,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun setupTravelPreferencesDropdown() {
         val typePreference = arrayOf(
             "Budaya", "Taman Hiburan", "Cagar Alam", "Bahari",
-            "Pusat Perbelanjaan", "Tempat Ibadah", "Agrowisata",
-            "Belanja", "Alam", "Rekreasi", "Religius", "Pantai"
+            "Pusat Perbelanjaan", "Tempat Ibadah", "Agrowisata"
         )
 
         (binding.typePreferences as? MaterialAutoCompleteTextView)?.setSimpleItems(typePreference)

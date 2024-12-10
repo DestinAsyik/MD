@@ -22,6 +22,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setupDatePicker()
         setupRegisterButton()
@@ -32,8 +33,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupTravelPreferencesSpinner() {
         val typePreference = arrayOf(
             "Budaya", "Taman Hiburan", "Cagar Alam", "Bahari",
-            "Pusat Perbelanjaan", "Tempat Ibadah", "Agrowisata",
-            "Belanja", "Alam", "Rekreasi", "Religius", "Pantai"
+            "Pusat Perbelanjaan", "Tempat Ibadah", "Agrowisata"
         )
         
         (binding.typePreferences as? MaterialAutoCompleteTextView)?.setSimpleItems(typePreference)

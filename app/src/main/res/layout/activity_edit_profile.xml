@@ -26,8 +26,8 @@
             app:fabSize="mini"
             app:srcCompat="@drawable/btn_back"
             app:tint="#24C690"
-            tools:layout_editor_absoluteX="128dp"
-            tools:layout_editor_absoluteY="16dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp" />
 
         <TextView
             android:id="@+id/textView11"
