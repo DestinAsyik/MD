@@ -10,12 +10,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.id.destinasyik.data.local.AppDatabase
 import com.id.destinasyik.data.local.entity.UserProfile
 import com.id.destinasyik.data.paging.PlacePagingSource
 import com.id.destinasyik.data.remote.response.AddBookmarkResponse
 import com.id.destinasyik.data.remote.response.AddReviewResponse
+import com.id.destinasyik.data.remote.response.ApiError
 import com.id.destinasyik.data.remote.response.BookmarksItem
 import com.id.destinasyik.data.remote.response.GetBookmarkResponse
 import com.id.destinasyik.data.remote.response.GetReviewResponseItem
@@ -72,6 +74,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _addReview = MutableLiveData<AddReviewResponse>()
     val addReview: LiveData<AddReviewResponse> = _addReview
+    private val _reviewErrorStatus = MutableLiveData<String>()
+    val reviewErrorStatus: LiveData<String> = _reviewErrorStatus
 
     private val _placeReviews = MutableLiveData<List<GetReviewResponseItem?>?>()
     val placeReviews: LiveData<List<GetReviewResponseItem?>?> = _placeReviews
@@ -473,6 +477,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     _addReview.value = response.body()
                     Log.e("Travel Cost", "Succesfully Fetch Travel Cost")
                 }else{
+                    val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, ApiError::class.java) // Parsing dengan Gson
+                        _reviewErrorStatus.value = apiError.error
+                    }
                     Log.e("Travel Cost", "onFailure: ${response.message()}")
                 }
             }

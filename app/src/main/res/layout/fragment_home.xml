@@ -17,10 +17,11 @@
             >
 
             <!-- Profile Section -->
-            <!--<LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
@@ -30,22 +31,28 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/profileImage"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/baseline_person_24"
-                        android:scaleType="centerCrop"/>
+                        android:id="@+id/userImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/profile_dummy"
+                        android:background="@drawable/circular"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="4dp"
+                        />
 
                     <TextView
-                        android:id="@+id/profileName"
+                        android:id="@+id/userGreet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User"
-                        android:layout_marginStart="8dp"
+                        android:text="Selamat Datang,\n Username"
+                        android:layout_marginStart="16dp"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
-            </LinearLayout>-->
+            </LinearLayout>
 
             <!-- Explore Text -->
             <TextView

@@ -9,16 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.id.destinasyik.R
-import com.id.destinasyik.data.local.entity.UserProfile
 import com.id.destinasyik.databinding.FragmentNearestPlaceBinding
 import com.id.destinasyik.databinding.FragmentUserPreferenceBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.MainActivity
 import com.id.destinasyik.ui.login.LoginActivity
-import com.id.destinasyik.ui.profile.EditProfileActivity
-import kotlinx.coroutines.launch
 
 class UserPreferenceFragment : Fragment() {
     private var _binding: FragmentUserPreferenceBinding? = null
@@ -33,7 +29,6 @@ class UserPreferenceFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         
         loadUserProfile()
-        updateProfile(viewModel)
         
         binding.btnLogout.setOnClickListener {
             logout(viewModel)
@@ -44,41 +39,18 @@ class UserPreferenceFragment : Fragment() {
     private fun loadUserProfile() {
         val sharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token", "") ?: ""
-        val userId = sharedPreferences.getInt("userId", 0)
-
+        
         if (token.isNotEmpty()) {
             viewModel.getProfile("Bearer $token")
             viewModel.profile.observe(viewLifecycleOwner) { user ->
                 user?.let {
-                    val userProfile = UserProfile(
-                        it.userId ?: 0,
-                        it.username ?: "Unknown User",
-                        it.email ?: "No Email"
-                    )
-                    viewModel.saveUserProfile(userProfile)
-                    binding.apply {
-                        userNameText.text = it.username ?: "Unknown User"
-                        userEmailText.text = it.email ?: "No Email"
-                    }
-                }
-            }
-        } else {
-            viewLifecycleOwner.lifecycleScope.launch {
-                val userProfile = viewModel.getUserProfile(userId)
-                userProfile?.let {
+                    // Update the TextViews in your card layout
                     binding.apply {
                         userNameText.text = it.username
                         userEmailText.text = it.email
                     }
                 }
             }
-        }
-    }
-
-    private fun updateProfile(viewModel: MainViewModel) {
-        binding.btnPersonalInfo.setOnClickListener {
-            val intent = Intent(activity, EditProfileActivity::class.java)
-            startActivity(intent)
         }
     }
 
