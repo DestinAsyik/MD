@@ -142,7 +142,7 @@
             android:drawablePadding="8dp"
             android:ems="10"
             android:fontFamily="@font/inter_regular"
-            android:hint="date_of_birth"
+            android:hint="Date Of Birth"
             android:inputType="date"
             android:padding="15dp"
             android:textColor="#9A9A9A"
