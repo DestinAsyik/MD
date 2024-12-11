@@ -1,8 +1,11 @@
 package com.id.destinasyik.ui.detail
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -49,6 +52,18 @@ class DetailActivity : AppCompatActivity() {
         loadData(place)
         checkIsBookmarked(tokenBearer, place)
         checkIsLiked(tokenBearer, place)
+        binding.btnDirection.setOnClickListener {
+            place?.let {
+                val latitude = place.latitude
+                val longitude = place.longitude
+                val gmmIntentUri = Uri.parse("google.navigation:q=$latitude,$longitude")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+
+                mapIntent.setPackage("com.google.android.apps.maps")
+
+                startActivity(mapIntent)
+            }
+        }
         binding.btnBookmark.setOnClickListener {
             place?.itemId?.let { it1 -> viewModel.addBookmark(tokenBearer, it1) }
         }

@@ -47,7 +47,7 @@ class UserPreferenceFragment : Fragment() {
                 user?.let {
                     // Update the TextViews in your card layout
                     binding.apply {
-                        userNameText.text = it.username
+                        userNameText.text = it.name
                         userEmailText.text = it.email
                     }
                 }

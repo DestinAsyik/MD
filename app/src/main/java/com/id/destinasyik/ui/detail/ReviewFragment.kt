@@ -89,10 +89,13 @@ class ReviewFragment : Fragment() {
                         viewModel.addReview(tokenBearer,
                             it1, rating, review, location.latitude, location.longitude)
                         viewModel.reviewErrorStatus.observe(viewLifecycleOwner){errorMessage->
-                            if(errorMessage.isEmpty()){
-                                showToast("Succesfully Add Review")
-                            }else{
-                                showToast(errorMessage)
+                            errorMessage?.let{
+                                if(errorMessage.isEmpty()){
+                                    showToast("Succesfully Add Review")
+                                }else{
+                                    showToast(errorMessage)
+                                    viewModel.clearErrorStatus()
+                                }
                             }
                         }
                     }

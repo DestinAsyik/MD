@@ -45,20 +45,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _login = MutableLiveData<LoginResponse>()
     val login: LiveData<LoginResponse> = _login
-    private val _registrationStatus = MutableLiveData<Boolean>()
-    val registrationStatus: LiveData<Boolean> get() = _registrationStatus
+    private val _errorLoginStatus = MutableLiveData<String?>()
+    val errorLoginStatus: LiveData<String?> = _errorLoginStatus
+
+    private val _errorRegisterStatus = MutableLiveData<String?>()
+    val errorRegisterStatus: LiveData<String?> = _errorRegisterStatus
+
     private val _profile = MutableLiveData<User?>()
     val profile: LiveData<User?> = _profile
+
     private val _placeReccomCategory = MutableLiveData<List<ReccomPlace?>?>()
     val placeReccomCategory: LiveData<List<ReccomPlace?>?> = _placeReccomCategory
     private val _placeReccomNearby = MutableLiveData<List<ReccomPlace?>?>()
     val placeReccomNearby: LiveData<List<ReccomPlace?>?> = _placeReccomNearby
     private val _placeRecommPeopleLiked = MutableLiveData<List<ReccomPlace?>?>()
     val placeRecommPeopleLiked: LiveData<List<ReccomPlace?>?> = _placeRecommPeopleLiked
+
     private val _bookmarkedPlace = MutableLiveData<List<BookmarksItem?>?>()
     val bookmarkedPlace: LiveData<List<BookmarksItem?>?> = _bookmarkedPlace
+
     private val _loadingEvent = MutableLiveData<Boolean>()
     val loadingEvent: LiveData<Boolean> = _loadingEvent
+
     private val _bookmarkResponse = MutableLiveData<AddBookmarkResponse>()
     val bookmarkResponse: LiveData<AddBookmarkResponse> = _bookmarkResponse
     private val _statusBookmark = MutableLiveData<AddBookmarkResponse>()
@@ -74,8 +82,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _addReview = MutableLiveData<AddReviewResponse>()
     val addReview: LiveData<AddReviewResponse> = _addReview
-    private val _reviewErrorStatus = MutableLiveData<String>()
-    val reviewErrorStatus: LiveData<String> = _reviewErrorStatus
+    private val _reviewErrorStatus = MutableLiveData<String?>()
+    val reviewErrorStatus: LiveData<String?> = _reviewErrorStatus
 
     private val _placeReviews = MutableLiveData<List<GetReviewResponseItem?>?>()
     val placeReviews: LiveData<List<GetReviewResponseItem?>?> = _placeReviews
@@ -91,6 +99,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
+
+    fun clearErrorStatus() {
+        _errorRegisterStatus.value = null
+        _errorLoginStatus.value = null
+        _reviewErrorStatus.value = null
+    }
 
     fun registerUser (
         username: String,
@@ -114,21 +128,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         client.enqueue(object : Callback<RegisterResponse>{
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful){
-                    _registrationStatus.value = true
                     Log.e("Register Auth", "Succesfully Register")
                 }else{
-                    _registrationStatus.value = false
+                    val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, ApiError::class.java) // Parsing dengan Gson
+                        _errorRegisterStatus.value = apiError.error
+                    }
                     Log.e("Register Auth", "onFailure: ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                _registrationStatus.value = false
                 Log.e("Login Auth", "onFailure: ${t.message.toString()}")
             }
 
         })
     }
-
 
     fun loginAuth(username: String, password: String){
         val jsonObject = JsonObject().apply {
@@ -142,6 +157,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     _login.value = response.body()
                     Log.e("Login Auth", "Succesfully Login")
                 }else{
+                    val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, ApiError::class.java) // Parsing dengan Gson
+                        _errorLoginStatus.value = apiError.error
+                    }
                     Log.e("Login Auth", "onFailure: ${response.message()}")
                 }
             }
@@ -205,7 +225,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     _successMessage.value = "Profile updated successfully!"
                     _error.value = null
                 } else {
-                    _error.value = "Failed to update profile: ${response.message()}"
+                    val errorBody = response.errorBody()?.string()
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, ApiError::class.java) // Parsing dengan Gson
+                        _error.value = apiError.error
+                    }
                 }
             }
 
@@ -361,6 +385,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getBookmark(authToken: String){
+        _loadingEvent.value=true
         val client = ApiConfig.getApiService().getBookmark(authToken)
         client.enqueue(object: Callback<GetBookmarkResponse>{
             override fun onResponse(
@@ -368,14 +393,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 response: Response<GetBookmarkResponse>
             ) {
                 if (response.isSuccessful){
+                    _loadingEvent.value=false
                     _bookmarkedPlace.value=response.body()?.bookmarks
                     Log.e("Bookmark", "Succesfully Fetch All Bookmarked Place")
                 }else{
+                    _loadingEvent.value=false
                     Log.e("Bookmark", "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<GetBookmarkResponse>, t: Throwable) {
+                _loadingEvent.value=false
                 Log.e("Bookmark", "onFailure: ${t.message.toString()}")
             }
 

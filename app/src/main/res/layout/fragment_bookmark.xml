@@ -33,6 +33,13 @@
             android:layout_gravity="center"/>
     </FrameLayout>
 
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookmarkRecycleView"
         android:layout_width="match_parent"

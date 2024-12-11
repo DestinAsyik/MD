@@ -33,6 +33,9 @@ class BookmarkFragment : Fragment() {
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(layoutInflater,container,false)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.loadingEvent.observe(viewLifecycleOwner){
+            loadingPage(it)
+        }
         setupRecommendedRecyclerView()
         loadData()
         return binding?.root
@@ -57,6 +60,10 @@ class BookmarkFragment : Fragment() {
             Log.d("Reccom Category","$place")
             bookmarkAdapter.submitList(place)
         }
+    }
+
+    private fun loadingPage(isLoading: Boolean) {
+        binding.loadingBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onResume() {

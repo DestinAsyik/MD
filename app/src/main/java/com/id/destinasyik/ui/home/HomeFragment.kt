@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
             viewModel.getProfile("Bearer $token")
             viewModel.profile.observe(viewLifecycleOwner) { user ->
                 user?.let {
-                    binding.userGreet.text="Selamat Datang,\n"+user.username
+                    binding.userGreet.text="Selamat Datang,\n"+user.name
                 }
             }
         }
