@@ -12,6 +12,7 @@ import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.login.LoginActivity
 import java.util.Calendar
 import android.app.DatePickerDialog
+import androidx.lifecycle.Observer
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 class RegisterActivity : AppCompatActivity() {
@@ -26,7 +27,6 @@ class RegisterActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setupDatePicker()
         setupRegisterButton()
-        observeRegistrationStatus()
         setupTravelPreferencesSpinner()
     }
 
@@ -62,6 +62,63 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun validateInputs(): Boolean {
+        val username = binding.etUsername.text.toString()
+        val email = binding.etEmail.text.toString()
+        val password = binding.passwordInput.text.toString()
+        val passwordConfirmation = binding.passwordConfirmation.text.toString()
+        val city = binding.etCity.text.toString()
+        val tanggalLahir = binding.etBorn.text.toString()
+        val name = binding.etFullName.text.toString()
+        val preferredCategory = binding.typePreferences.text.toString()
+
+        if (username.isEmpty()){
+            binding.etUsername.error = "Username cannot be empty"
+        }
+
+        if (email.isEmpty()) {
+            binding.etEmail.error = "Email cannot be empty"
+            return false
+        }
+
+        if (password.isEmpty()) {
+            binding.passwordInput.error = "Password cannot be empty"
+            return false
+        }
+
+        if (passwordConfirmation.isEmpty()) {
+            binding.passwordInput.error = "Password Confirmation cannot be empty"
+            return false
+        }
+
+        if (passwordConfirmation!=password) {
+            binding.passwordConfirmation.error = "Password Confirmation must be the same with password"
+            return false
+        }
+
+        if (city.isEmpty()) {
+            binding.etCity.error = "City cannot be empty"
+            return false
+        }
+
+        if (tanggalLahir.isEmpty()) {
+            binding.etBorn.error = "Birth Day cannot be empty"
+            return false
+        }
+
+        if (name.isEmpty()) {
+            binding.etFullName.error = "Full Name cannot be empty"
+            return false
+        }
+
+        if (preferredCategory.isEmpty()) {
+            binding.typePreferences.error = "Must Choose One Prefered Category"
+            return false
+        }
+
+        return true
+    }
+
     private fun setupRegisterButton() {
         binding.buttonRegister.setOnClickListener {
             val username = binding.etUsername.text.toString()
@@ -72,44 +129,35 @@ class RegisterActivity : AppCompatActivity() {
             val tanggalLahir = binding.etBorn.text.toString()
             val name = binding.etFullName.text.toString()
             val preferredCategory = binding.typePreferences.text.toString()
+            if(validateInputs()){
+                viewModel.registerUser(
+                    username = username,
+                    name = name,
+                    password = password,
+                    tanggal_lahir = tanggalLahir,
+                    email = email,
+                    city = city,
+                    preferedCategory = preferredCategory
 
-            // Input validation
-            when {
-                username.isEmpty() -> showToast("Username cannot be empty")
-                email.isEmpty() -> showToast("Email cannot be empty")
-                password.isEmpty() -> showToast("Password cannot be empty")
-                passwordConfirmation.isEmpty() -> showToast("Password confirmation cannot be empty")
-                city.isEmpty() -> showToast("City cannot be empty")
-                tanggalLahir == "Born" || tanggalLahir.isEmpty() -> showToast("Date of birth cannot be empty")
-                name.isEmpty() -> showToast("Name cannot be empty")
-                preferredCategory.isEmpty() -> showToast("Please select travel preferences")
-                password != passwordConfirmation -> showToast("Passwords do not match")
-                else -> {
-                    // Proceed with registration
-                    viewModel.registerUser(
-                        username = username,
-                        name = name,
-                        password = password,
-                        tanggal_lahir = tanggalLahir,
-                        email = email,
-                        city = city,
-                        preferedCategory = preferredCategory
-                    )
-                }
+                )
+                viewModel.errorRegisterStatus.observe(this, Observer { error->
+                    error?.let{
+                        if(error.isEmpty()){
+                            showToast("Succesfully Register an Account!")
+                            startActivity(Intent(this, LoginActivity::class.java))
+                            finish()
+                        }else{
+                            showToast("Failed to Register : $error")
+                            viewModel.clearErrorStatus()
+                        }
+                    }
+                })
             }
         }
-    }
 
-    private fun observeRegistrationStatus() {
-        viewModel.registrationStatus.observe(this) { isRegistered ->
-            if (isRegistered) {
-                showToast("Registration successful!")
-                // Navigate to login screen
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            } else {
-                showToast("Registration failed. Please try again.")
-            }
+        binding.btnSignIn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 

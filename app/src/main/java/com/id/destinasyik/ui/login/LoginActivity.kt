@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
@@ -75,8 +76,17 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val username = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-        
         viewModel.loginAuth(username, password)
+        viewModel.errorLoginStatus.observe(this, Observer { error->
+            error?.let{
+                if(error.isEmpty()){
+                    Toast.makeText(this@LoginActivity, "Login Succesful!", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@LoginActivity, "Failed to Login : $error", Toast.LENGTH_SHORT).show()
+                    viewModel.clearErrorStatus()
+                }
+            }
+        })
     }
 
     private fun handleLoginResponse(response: LoginResponse?) {

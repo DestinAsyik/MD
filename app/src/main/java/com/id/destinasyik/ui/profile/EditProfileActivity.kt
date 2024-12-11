@@ -66,6 +66,46 @@ class EditProfileActivity : AppCompatActivity() {
         (binding.typePreferences as? MaterialAutoCompleteTextView)?.setSimpleItems(typePreference)
     }
 
+    private fun validateInputs(): Boolean {
+        val username = binding.etUsername.text.toString()
+        val email = binding.etEmail.text.toString()
+        val city = binding.etCity.text.toString()
+        val tanggalLahir = binding.etBorn.text.toString()
+        val name = binding.etName.text.toString()
+        val preferredCategory = binding.typePreferences.text.toString()
+
+        if (username.isEmpty()){
+            binding.etUsername.error = "Username cannot be empty"
+        }
+
+        if (email.isEmpty()) {
+            binding.etEmail.error = "Email cannot be empty"
+            return false
+        }
+
+        if (city.isEmpty()) {
+            binding.etCity.error = "City cannot be empty"
+            return false
+        }
+
+        if (tanggalLahir.isEmpty()) {
+            binding.etBorn.error = "Birth Day cannot be empty"
+            return false
+        }
+
+        if (name.isEmpty()) {
+            binding.etName.error = "Full Name cannot be empty"
+            return false
+        }
+
+        if (preferredCategory.isEmpty()) {
+            binding.typePreferences.error = "Must Choose One Prefered Category"
+            return false
+        }
+
+        return true
+    }
+
     private fun setupEditProfileButton() {
         binding.buttonEditProfile.setOnClickListener {
             val name = binding.etName.text.toString()
@@ -74,22 +114,13 @@ class EditProfileActivity : AppCompatActivity() {
             val dateOfBirth = binding.etBorn.text.toString()
             val city = binding.etCity.text.toString()
             val preferredCategory = binding.typePreferences.text.toString()
-
-            when {
-                name.isEmpty() -> showToast("Name cannot be empty")
-                username.isEmpty() -> showToast("Username cannot be empty")
-                email.isEmpty() -> showToast("Email cannot be empty")
-                dateOfBirth.isEmpty() -> showToast("Date of birth cannot be empty")
-                city.isEmpty() -> showToast("City cannot be empty")
-                preferredCategory.isEmpty() -> showToast("Please select travel preferences")
-                else -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                    val token = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-                        .getString("token", "") ?: ""
-                    viewModel.updateProfile(
-                        username, name, email, dateOfBirth, city, preferredCategory, "Bearer $token"
-                    )
-                }
+            if(validateInputs()){
+                binding.progressBar.visibility = View.VISIBLE
+                val token = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                viewModel.updateProfile(
+                    username, name, email, dateOfBirth, city, preferredCategory, "Bearer $token"
+                )
             }
         }
     }
