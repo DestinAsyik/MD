@@ -101,6 +101,7 @@ class ReviewFragment : Fragment() {
                     }
                 }
             }
+            loadData()
         }
     }
 

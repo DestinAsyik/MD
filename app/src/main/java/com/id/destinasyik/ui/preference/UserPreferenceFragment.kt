@@ -81,4 +81,9 @@ class UserPreferenceFragment : Fragment() {
             logout(viewModel)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        loadUserProfile()
+    }
 }

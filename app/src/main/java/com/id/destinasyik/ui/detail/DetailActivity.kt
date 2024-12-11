@@ -1,19 +1,24 @@
 package com.id.destinasyik.ui.detail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.id.destinasyik.R
@@ -27,12 +32,15 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: DetailPagerAdapter
     private lateinit var viewModel: MainViewModel
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         supportActionBar?.hide()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        getLastLocation()
         tabLayout = binding.tabLayout
         viewPager2 = binding.viewPager
         adapter = DetailPagerAdapter(this)
@@ -75,6 +83,23 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation(){
+        if(isLocationPermissionGranted()){
+            val lastLocation = fusedLocationProviderClient.lastLocation
+            lastLocation.addOnSuccessListener {
+                if(it != null){
+                    loadDataRange(it.latitude,it.longitude)
+                    Log.d("Current Loc","Latitude : ${it.latitude}, Longitude : ${it.longitude}")
+                }
+            }
+
+            lastLocation.addOnFailureListener {
+                Log.d("Current Loc","Failed to get Current Location")
+            }
+        }
+    }
+
     private fun checkIsBookmarked(authToken: String, place: ReccomPlace?){
         place?.itemId?.let { it1 -> viewModel.statusBookmark(authToken, it1) }
         viewModel.statusBookmark.observe(this, Observer { response->
@@ -113,6 +138,40 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(it.gambar)
                 .into(binding.tvImagePlace)
+        }
+    }
+
+    private fun loadDataRange(latitude: Double, longitude: Double) {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        val place: ReccomPlace? = intent.getParcelableExtra("PLACE") as? ReccomPlace
+        place?.itemId?.let { viewModel.getPricing(tokenBearer, it, latitude, longitude ) }
+        viewModel.listCost.observe(this, Observer { response->
+            binding.tvRange.text=response.distance
+        })
+    }
+
+    private fun isLocationPermissionGranted(): Boolean {
+        return if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                1001
+            )
+            false
+        } else {
+            true
         }
     }
 }
