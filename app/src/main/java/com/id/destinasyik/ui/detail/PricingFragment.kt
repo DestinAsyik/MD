@@ -50,6 +50,9 @@ class PricingFragment : Fragment() {
             binding.tvPertalitePrice.text= response.fuelDetails?.get(0)?.fuelCost
             binding.tvPertamaxPrice.text= response.fuelDetails?.get(1)?.fuelCost
             binding.tvSolarPrice.text= response.fuelDetails?.get(2)?.fuelCost
+            binding.tvPertaliteCost.text= response.fuelDetails?.get(0)?.totalCost
+            binding.tvPertamaxCost.text= response.fuelDetails?.get(1)?.totalCost
+            binding.tvSolarCost.text= response.fuelDetails?.get(2)?.totalCost
             val distancePlace = response.distance
             binding.solarRange.text=distancePlace
             binding.pertaliteRange.text=distancePlace
