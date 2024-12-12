@@ -68,5 +68,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation (libs.material)
+    implementation ("androidx.appcompat:appcompat:1.6.1")
 
 }
