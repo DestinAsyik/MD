@@ -37,6 +37,7 @@ class PlacePagingAdapter: PagingDataAdapter<ReccomPlace, PlacePagingAdapter.Plac
             Glide.with(binding.placeImage.context)
                 .load(place.gambar)
                 .into(binding.placeImage)
+            binding.tvCategory.text=place.category
         }
     }
 

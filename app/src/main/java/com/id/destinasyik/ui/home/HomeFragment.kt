@@ -115,6 +115,7 @@ class HomeFragment : Fragment() {
                     Log.d("Search Keyword","$searchText")
                     lifecycleScope.launch {
                         viewModel.searchDestination(tokenBearer,searchText).collectLatest {response->
+                            Log.d("Search Places","$response")
                             adapterSearch.submitData(response)
                         }
                     }

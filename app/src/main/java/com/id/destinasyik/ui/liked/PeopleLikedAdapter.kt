@@ -28,6 +28,7 @@ class PeopleLikedAdapter() : ListAdapter<ReccomPlace,PeopleLikedAdapter.LikedPla
             Glide.with(binding.placeImage.context)
                 .load(place.gambar)
                 .into(binding.placeImage)
+            binding.tvCategory.text=place.category
         }
     }
 

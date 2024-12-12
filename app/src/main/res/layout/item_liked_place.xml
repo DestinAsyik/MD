@@ -37,10 +37,20 @@
                 android:text="Place Name"
                 android:textStyle="bold"/>
 
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="Category Place"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -55,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/colorAccent"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp"
                     tools:text="Italy" />
             </LinearLayout>
@@ -62,7 +73,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
+                android:layout_marginVertical="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

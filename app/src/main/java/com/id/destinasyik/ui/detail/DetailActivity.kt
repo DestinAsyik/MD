@@ -25,6 +25,8 @@ import com.id.destinasyik.R
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.databinding.ActivityDetailBinding
 import com.id.destinasyik.model.MainViewModel
+import java.text.DecimalFormat
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -40,7 +42,6 @@ class DetailActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         supportActionBar?.hide()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        getLastLocation()
         tabLayout = binding.tabLayout
         viewPager2 = binding.viewPager
         adapter = DetailPagerAdapter(this)
@@ -53,7 +54,12 @@ class DetailActivity : AppCompatActivity() {
             }
         }.attach()
         val place: ReccomPlace? = intent.getParcelableExtra("PLACE") as? ReccomPlace
-        Log.d("PLACE DETAIL","$place")
+        if(place?.distanceKm.toString().equals("null")){
+            getLastLocation()
+        }else{
+            val distance = String.format(Locale.US, "%.2f", place?.distanceKm)+" Km"
+            binding.tvRange.text=distance
+        }
         val sharedPreferences: SharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token",null)
         val tokenBearer = "Bearer "+token
