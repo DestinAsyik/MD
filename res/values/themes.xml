@@ -1,5 +1,34 @@
-<style name="Theme.YourApp" parent="Theme.Material3.DayNight">
-    <item name="colorPrimary">@color/your_primary_color</item>
-    <item name="colorOnSurfaceVariant">@color/your_secondary_text_color</item>
-    <!-- Other color attributes as needed -->
-</style> 
+<resources>
+    <!-- Base application theme -->
+    <style name="Base.Theme.DestinAsyik" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorOnBackground">@color/on_background_light</item>
+        <item name="colorSurface">@color/background_light</item>
+        <item name="colorOnSurface">@color/on_background_light</item>
+
+        <!-- Status bar and Navigation bar -->
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/background_light</item>
+
+        <!-- Component styles -->
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+        <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.Material3.CardView.Elevated</item>
+    </style>
+
+    <!-- Dark theme -->
+    <style name="Theme.DestinAsyik" parent="Base.Theme.DestinAsyik" />
+</resources> 
