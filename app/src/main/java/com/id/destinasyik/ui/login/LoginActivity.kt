@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         if (password.isEmpty()) {
-            binding.passwordInput.error = "Password cannot be empty"
+            binding.passwordInputLayout.error = "Password cannot be empty"
             return false
         }
 
