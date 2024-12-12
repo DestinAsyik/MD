@@ -32,11 +32,16 @@ class PricingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentPricingBinding.inflate(layoutInflater,container,false)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        _binding = FragmentPricingBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getLastLocation()
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun loadData(latitude: Double, longitude: Double) {

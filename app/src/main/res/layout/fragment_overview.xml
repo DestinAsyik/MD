@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".ui.detail.OverviewFragment"
-    android:orientation="vertical"
-    >
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.detail.OverviewFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
-        <TextView
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvOverview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="Taman Pintar Yogyakarta (bahasa Jawa: Hanacaraka,ꦠꦩꦤ꧀​ꦥꦶꦤ꧀ꦠꦂ​ꦔꦪꦺꦴꦒꦾꦏꦂꦠ, Taman Pintar Ngayogyakarta) adalah wahana wisata yang terdapat di pusat Kota Yogyakarta, tepatnya di Jalan Panembahan Senopati No. 1-3, Yogyakarta, di kawasan Benteng Vredeburg. Taman ini memadukan tempat wisata rekreasi maupun edukasi dalam satu lokasi. Taman Pintar memiliki arena bermain sekaligus sarana edukasi yang terbagi dalam beberapa zona. Akses langsung kepada pusat buku eks Shopping Centre juga menambah nilai lebih Taman Pintar. Tempat rekreasi ini sangat baik untuk anak-anak pada masa perkembangan.\nBeberapa tahun ini Taman Pintar menjadi alternatif tempat berwisata bagi masyarakat Yogyakarta maupun luar kota.Taman ini, khususnya pada wahana pendidikan anak usia dini dilengkapi dengan teknologi interaktif digital serta pemetaan video yang akan memacu imajinasi anak serta ketertarikan mereka terhadap teknologi. Pada saat ini ada 35 zona dan 3.500 alat peraga permainan yang edukatif."/>
+            android:text="@string/overview_1"
+            android:justificationMode="inter_word"
+            android:layout_marginBottom="16dp"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_book"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
+            style="@style/Widget.Material3.Button"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/book"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            />
+            app:cornerRadius="8dp" />
     </LinearLayout>
 </ScrollView>

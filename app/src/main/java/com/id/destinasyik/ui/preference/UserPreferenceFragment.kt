@@ -19,6 +19,7 @@ import com.id.destinasyik.ui.login.LoginActivity
 import com.id.destinasyik.ui.profile.EditProfileActivity
 import com.id.destinasyik.ui.register.RegisterActivity
 import com.id.destinasyik.ui.updatepw.UpdatePasswordActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 class UserPreferenceFragment : Fragment() {
     private var _binding: FragmentUserPreferenceBinding? = null
@@ -34,6 +35,7 @@ class UserPreferenceFragment : Fragment() {
         
         loadUserProfile()
         setupAction()
+        setupThemeSwitch()
         return binding.root
     }
 
@@ -79,6 +81,27 @@ class UserPreferenceFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener {
             logout(viewModel)
+        }
+    }
+
+    private fun setupThemeSwitch() {
+        // Get the saved theme preference
+        val sharedPreferences = requireContext().getSharedPreferences("ThemePrefs", MODE_PRIVATE)
+        val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
+        
+        // Set the initial switch state
+        binding.themeSwitch.isChecked = isDarkMode
+
+        binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            // Save the theme preference
+            sharedPreferences.edit().putBoolean("isDarkMode", isChecked).apply()
+            
+            // Apply the theme
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
     }
 
