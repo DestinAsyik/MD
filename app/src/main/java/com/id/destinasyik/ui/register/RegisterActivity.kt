@@ -140,6 +140,13 @@ class RegisterActivity : AppCompatActivity() {
                     preferedCategory = preferredCategory
 
                 )
+                viewModel.register.observe(this, Observer { response->
+                    if(response.user != null){
+                        showToast("Succesfully Register an Account!")
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    }
+                })
                 viewModel.errorRegisterStatus.observe(this, Observer { error->
                     error?.let{
                         if(error.isEmpty()){

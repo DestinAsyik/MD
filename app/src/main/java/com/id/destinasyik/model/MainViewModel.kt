@@ -31,6 +31,7 @@ import com.id.destinasyik.data.remote.response.RecommByCategoryResponse
 import com.id.destinasyik.data.remote.response.RecommByNearbyResponse
 import com.id.destinasyik.data.remote.response.RecommByPeopleLiked
 import com.id.destinasyik.data.remote.response.RegisterResponse
+import com.id.destinasyik.data.remote.response.TokenError
 import com.id.destinasyik.data.remote.response.UpdateProfile
 import com.id.destinasyik.data.remote.response.User
 import com.id.destinasyik.data.remote.retrofit.ApiConfig
@@ -43,11 +44,16 @@ import retrofit2.Response
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val userProfileDao = AppDatabase.getDatabase(application).userProfileDao()
 
+    private val _invalidToken = MutableLiveData<String?>()
+    val invalidToken: LiveData<String?> = _invalidToken
+
     private val _login = MutableLiveData<LoginResponse>()
     val login: LiveData<LoginResponse> = _login
     private val _errorLoginStatus = MutableLiveData<String?>()
     val errorLoginStatus: LiveData<String?> = _errorLoginStatus
 
+    private val _register = MutableLiveData<RegisterResponse>()
+    val register: LiveData<RegisterResponse> = _register
     private val _errorRegisterStatus = MutableLiveData<String?>()
     val errorRegisterStatus: LiveData<String?> = _errorRegisterStatus
 
@@ -104,6 +110,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _errorRegisterStatus.value = null
         _errorLoginStatus.value = null
         _reviewErrorStatus.value = null
+        _invalidToken.value = null
     }
 
     fun registerUser (
@@ -128,6 +135,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         client.enqueue(object : Callback<RegisterResponse>{
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful){
+                    _register.value=response.body()
                     Log.e("Register Auth", "Succesfully Register")
                 }else{
                     val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
@@ -183,6 +191,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     _profile.value = response.body()?.user
                     Log.e("User Profile", "Succesfully Fetch Profile")
                 }else{
+                    val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, TokenError::class.java) // Parsing dengan Gson
+                        _invalidToken.value = apiError.message
+                        Log.d("INVALID TOKEN MVM PARSE","${apiError.message}")
+                    }
+                    Log.d("INVALID TOKEN MVM","$errorBody")
+
                     Log.e("User Profile", "onFailure: ${response.message()}")
                 }
             }
@@ -398,6 +414,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     Log.e("Bookmark", "Succesfully Fetch All Bookmarked Place")
                 }else{
                     _loadingEvent.value=false
+                    val errorBody = response.errorBody()?.string() // Ambil error body sebagai string
+                    errorBody?.let {
+                        val apiError = Gson().fromJson(it, TokenError::class.java) // Parsing dengan Gson
+                        _invalidToken.value = apiError.message
+                    }
                     Log.e("Bookmark", "onFailure: ${response.message()}")
                 }
             }

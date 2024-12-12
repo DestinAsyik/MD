@@ -25,8 +25,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-
         setupViewModel()
+        viewModel.clearErrorStatus()
         checkLoginStatus()
         setupClickListeners()
     }
@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         if (password.isEmpty()) {
-            binding.passwordInput.error = "Password cannot be empty"
+            binding.passwordInputLayout.error = "Password cannot be empty"
             return false
         }
 

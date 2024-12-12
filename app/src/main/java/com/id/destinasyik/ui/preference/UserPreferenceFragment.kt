@@ -3,6 +3,7 @@ package com.id.destinasyik.ui.preference
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,12 @@ class UserPreferenceFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         
         loadUserProfile()
+        viewModel.invalidToken.observe(viewLifecycleOwner){invalid->
+            Log.d("NOTIF INVALID", "$invalid")
+            if(invalid?.isNotEmpty() == true){
+                logoutInvalidToken()
+            }
+        }
         setupAction()
         setupThemeSwitch()
         return binding.root
@@ -55,6 +62,18 @@ class UserPreferenceFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun logoutInvalidToken() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("userId",0)
+        editor.putString("token","")
+        editor.apply()
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun logout(viewModel: MainViewModel) {
