@@ -1,0 +1,5 @@
+<style name="Theme.YourApp" parent="Theme.Material3.DayNight">
+    <item name="colorPrimary">@color/your_primary_color</item>
+    <item name="colorOnSurfaceVariant">@color/your_secondary_text_color</item>
+    <!-- Other color attributes as needed -->
+</style> 
