@@ -113,6 +113,7 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/pertamaxContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -136,6 +137,91 @@
             android:layout_marginStart="25dp"/>
         <TextView
             android:id="@+id/tvPertamaxPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 50.000"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginStart="25dp"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Cost"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pertamaxContainer"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_regular"/>
+    <LinearLayout
+        android:id="@+id/solarCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCost"
+        android:layout_marginTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solar\t\t\t\t\t"
+            android:textSize="20sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvSolarCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 30.000"
+            android:textSize="20sp"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/poppins_bold"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/pertaliteCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/solarCost"
+        android:layout_marginTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pertalite\t"
+            android:textSize="20sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvPertaliteCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 40.000"
+            android:textSize="20sp"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/poppins_bold"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/pertamaxCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pertaliteCost"
+        android:layout_marginTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pertamax"
+            android:textSize="20sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvPertamaxCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rp. 50.000"
