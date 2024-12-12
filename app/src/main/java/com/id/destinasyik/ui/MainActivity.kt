@@ -29,22 +29,22 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        supportActionBar?.hide()
         setContentView(binding.root)
+
+        // Konfigurasi Navigation Component dengan BottomNavigationView
         val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val navController = findNavController   (R.id.nav_host_fragment_activity_main)
-
+        // Tetapkan fragment-fragment utama untuk navigasi
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment, R.id.bookmarkFragment, R.id.userPreferenceFragment,
-            )
+            setOf(R.id.homeFragment, R.id.bookmarkFragment, R.id.userPreferenceFragment)
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Setup BottomNavigationView dengan NavController
         navView.setupWithNavController(navController)
     }
-
 }

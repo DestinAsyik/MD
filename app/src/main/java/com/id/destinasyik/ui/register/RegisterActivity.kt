@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupDatePicker() {
-        binding.etBorn.setOnClickListener {
+        binding.inputBorn.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
@@ -53,7 +53,7 @@ class RegisterActivity : AppCompatActivity() {
                     val formattedDay = String.format("%02d", selectedDay)
                     val formattedMonth = String.format("%02d", selectedMonth + 1)
                     val selectedDate = "$selectedYear-$formattedMonth-$formattedDay"
-                    binding.etBorn.setText(selectedDate)
+                    binding.inputBorn.setText(selectedDate)
                 },
                 year,
                 month,
@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.passwordInput.text.toString()
         val passwordConfirmation = binding.passwordConfirmation.text.toString()
         val city = binding.etCity.text.toString()
-        val tanggalLahir = binding.etBorn.text.toString()
+        val tanggalLahir = binding.inputBorn.text.toString()
         val name = binding.etFullName.text.toString()
         val preferredCategory = binding.typePreferences.text.toString()
 
@@ -102,7 +102,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (tanggalLahir.isEmpty()) {
-            binding.etBorn.error = "Birth Day cannot be empty"
+            binding.inputBorn.error = "Birth Day cannot be empty"
             return false
         }
 
@@ -126,7 +126,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.passwordInput.text.toString()
             val passwordConfirmation = binding.passwordConfirmation.text.toString()
             val city = binding.etCity.text.toString()
-            val tanggalLahir = binding.etBorn.text.toString()
+            val tanggalLahir = binding.inputBorn.text.toString()
             val name = binding.etFullName.text.toString()
             val preferredCategory = binding.typePreferences.text.toString()
             if(validateInputs()){

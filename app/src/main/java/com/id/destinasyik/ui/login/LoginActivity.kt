@@ -12,6 +12,7 @@ import com.id.destinasyik.data.remote.response.LoginResponse
 import com.id.destinasyik.databinding.ActivityLoginBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.MainActivity
+import com.id.destinasyik.ui.forgotpw.ForgotPasswordActivity
 import com.id.destinasyik.ui.preference.PreferedInputActivity
 import com.id.destinasyik.ui.register.RegisterActivity
 
@@ -45,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.button3.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             if (validateInputs()) {
                 login()
             }
@@ -53,6 +54,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        binding.textView8.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
 
