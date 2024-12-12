@@ -216,7 +216,7 @@
                     android:paddingStart="1dp"
                     android:paddingTop="10dp"
                     android:paddingEnd="16dp"
-                    android:background="@color/white"
+                    android:background="?android:attr/windowBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
