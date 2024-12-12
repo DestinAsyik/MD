@@ -1,0 +1,21 @@
+<resources>
+    <color name="primary">#4CAF50</color>
+    <color name="on_primary">#000000</color>
+    <color name="primary_container">#388E3C</color>
+    <color name="on_primary_container">#FFFFFF</color>
+
+    <color name="secondary">#81C784</color>
+    <color name="on_secondary">#000000</color>
+    <color name="secondary_container">#388E3C</color>
+    <color name="on_secondary_container">#FFFFFF</color>
+
+    <color name="background_light">#121212</color>
+    <color name="on_background_light">#FFFFFF</color>
+
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B3FFFFFF</color>
+
+    <color name="card_background">#1E1E1E</color>
+    <color name="ripple_color">#33FFFFFF</color>
+    <color name="elevation_overlay">#1FFFFFFF</color>
+</resources>
