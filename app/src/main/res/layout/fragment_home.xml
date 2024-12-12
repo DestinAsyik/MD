@@ -46,7 +46,6 @@
                         android:id="@+id/userGreet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
                         android:text="@string/selamat_datang_n_username"
                         android:layout_marginStart="16dp"
                         android:textSize="15sp"
@@ -62,7 +61,6 @@
                 android:text="@string/explore_the_nbeauty_of_indonesia"
                 android:textSize="20sp"
                 android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"
                 android:padding="16dp"/>
 
             <!-- Search Card -->
@@ -120,7 +118,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/recommend"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
@@ -179,7 +176,6 @@
                     android:layout_weight="1"
                     android:text="People Also Liked"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
