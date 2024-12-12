@@ -25,8 +25,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-
         setupViewModel()
+        viewModel.clearErrorStatus()
         checkLoginStatus()
         setupClickListeners()
     }

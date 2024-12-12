@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -11,6 +12,8 @@ import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -25,11 +28,12 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.id.destinasyik.R
 import com.id.destinasyik.databinding.ActivityMainBinding
+import com.id.destinasyik.model.MainViewModel
+import com.id.destinasyik.ui.login.LoginActivity
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,4 +51,6 @@ class MainActivity : AppCompatActivity() {
         // Setup BottomNavigationView dengan NavController
         navView.setupWithNavController(navController)
     }
+
+
 }

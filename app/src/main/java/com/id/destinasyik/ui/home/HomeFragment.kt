@@ -62,11 +62,29 @@ class HomeFragment : Fragment() {
         })
         setupPeopleLikedRecyclerView()
         loadData()
+        viewModel.invalidToken.observe(viewLifecycleOwner){invalid->
+            Log.d("NOTIF INVALID", "$invalid")
+            if(invalid?.isNotEmpty() == true){
+                logout()
+            }
+        }
         setupSearch()
         viewModel.loadingEvent.observe(viewLifecycleOwner){
             loadingPage(it)
         }
         return binding?.root
+    }
+
+    private fun logout() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("userId",0)
+        editor.putString("token","")
+        editor.apply()
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setupPeopleLikedRecyclerView() {

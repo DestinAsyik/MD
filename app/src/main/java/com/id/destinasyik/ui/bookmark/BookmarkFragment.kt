@@ -1,5 +1,6 @@
 package com.id.destinasyik.ui.bookmark
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.id.destinasyik.databinding.FragmentBookmarkBinding
 import com.id.destinasyik.databinding.FragmentHomeBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.liked.PeopleLikedAdapter
+import com.id.destinasyik.ui.login.LoginActivity
 import com.id.destinasyik.ui.recomended.RecommendedAdapter
 
 class BookmarkFragment : Fragment() {
@@ -38,7 +40,25 @@ class BookmarkFragment : Fragment() {
         }
         setupRecommendedRecyclerView()
         loadData()
+        viewModel.invalidToken.observe(viewLifecycleOwner){invalid->
+            Log.d("NOTIF INVALID", "$invalid")
+            if(invalid?.isNotEmpty() == true){
+                logout()
+            }
+        }
         return binding?.root
+    }
+
+    private fun logout() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token",null)
+        val tokenBearer = "Bearer "+token
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("userId",0)
+        editor.putString("token","")
+        editor.apply()
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setupRecommendedRecyclerView() {
