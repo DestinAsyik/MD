@@ -23,6 +23,7 @@ class BookmarkAdapter() : ListAdapter<BookmarksItem, BookmarkAdapter.MyViewHolde
             binding.placeName.text=place.destination?.placeName
             binding.placeLocation.text=place.destination?.city
             binding.ratingText.text=place.destination?.ratingAvg.toString()
+            binding.tvCategory.text=place.destination?.category
         }
     }
 

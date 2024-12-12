@@ -68,14 +68,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?android:attr/textColorPrimary"
+                android:fontFamily="@font/poppins_bold"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="City Rome" />
 
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="Category Place"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -90,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/colorAccent"
+                    android:fontFamily="@font/poppins_regular"
                     android:textSize="14sp"
                     tools:text="Italy" />
 
@@ -100,6 +112,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
                     tools:text="0 Km"
+                    android:fontFamily="@font/poppins_regular"
                     android:layout_weight="1"
                     android:textAlignment="textEnd"/>
             </LinearLayout>

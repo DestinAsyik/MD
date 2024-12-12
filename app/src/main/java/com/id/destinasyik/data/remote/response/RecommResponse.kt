@@ -43,17 +43,14 @@ data class ReccomPlace(
 	@field:SerializedName("coordinate")
 	val coordinate: String? = null,
 
+	@field:SerializedName("distance_km")
+	val distanceKm: Double? = null,
+
 	@field:SerializedName("item_id")
 	val itemId: Int? = null,
 
 	@field:SerializedName("city")
 	val city: String? = null,
-
-	@field:SerializedName("price")
-	val price: Int? = null,
-
-	@field:SerializedName("rating_avg")
-	val ratingAvg: Float? = null,
 
 	@field:SerializedName("latitude")
 	val latitude: Double? = null,
@@ -61,14 +58,20 @@ data class ReccomPlace(
 	@field:SerializedName("description")
 	val description: String? = null,
 
-	@field:SerializedName("category")
-	val category: String? = null,
-
 	@field:SerializedName("gambar")
 	val gambar: String? = null,
 
 	@field:SerializedName("rating_count")
 	val ratingCount: Int? = null,
+
+	@field:SerializedName("price")
+	val price: Int? = null,
+
+	@field:SerializedName("rating_avg")
+	val ratingAvg: Float? = null,
+
+	@field:SerializedName("category")
+	val category: String? = null,
 
 	@field:SerializedName("longitude")
 	val longitude: Double? = null

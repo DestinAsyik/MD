@@ -1,6 +1,7 @@
 package com.id.destinasyik.ui.recomended
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.id.destinasyik.data.local.mock.Place
 import com.id.destinasyik.data.remote.response.ReccomPlace
 import com.id.destinasyik.databinding.ItemRecommendedPlaceBinding
 import com.id.destinasyik.ui.detail.DetailActivity
+import java.text.DecimalFormat
+import java.util.Locale
 
 class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceViewHolder>(DIFF_CALLBACK){
 
@@ -39,6 +42,15 @@ class RecommendedAdapter : ListAdapter<ReccomPlace, RecommendedAdapter.PlaceView
             binding.placeName.text=place.placeName
             binding.placeLocation.text=place.city
             binding.ratingText.text=place.ratingAvg.toString()
+            val distance = String.format(Locale.US,"%.2f", place.distanceKm)+" Km"
+            val isEmpty = "nu Km"
+            if(distance.equals(isEmpty)){
+                binding.rangePlace.visibility=View.GONE
+                binding.tvCategory.text=place.category
+            }else{
+                binding.rangePlace.text=distance
+                binding.tvCategory.visibility=View.GONE
+            }
             Glide.with(binding.placeImage.context)
                 .load(place.gambar)
                 .into(binding.placeImage)
