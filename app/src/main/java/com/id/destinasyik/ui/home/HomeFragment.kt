@@ -65,6 +65,7 @@ class HomeFragment : Fragment() {
         viewModel.invalidToken.observe(viewLifecycleOwner){invalid->
             Log.d("NOTIF INVALID", "$invalid")
             if(invalid?.isNotEmpty() == true){
+                Toast.makeText(requireContext(), "$invalid", Toast.LENGTH_SHORT).show()
                 logout()
             }
         }
