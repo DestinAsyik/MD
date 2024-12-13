@@ -18,7 +18,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:text="@string/tittle"
-                style="@style/Tittle.DestinAsyik"
+                android:textSize="36sp"
+                android:fontFamily="@font/poppins_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_In"
-                style="@style/SubTittle.DestinAsyik"
+                android:textSize="30sp"
+                android:fontFamily="@font/inter_bold"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -47,7 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deskripsi"
-                style="@style/Deskripsi.DestinAsyik"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_regular"
                 app:layout_constraintStart_toStartOf="@+id/textView3"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 

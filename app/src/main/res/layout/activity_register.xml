@@ -32,11 +32,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView2"
-            style="@style/Tittle.DestinAsyik"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="@string/tittle"
+            android:textSize="36sp"
+            android:fontFamily="@font/poppins_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,16 +54,18 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView3"
-            style="@style/SubTittle.DestinAsyik"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_Up"
+            android:textSize="30sp"
+            android:fontFamily="@font/inter_bold"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView4"
-            style="@style/Deskripsi.DestinAsyik"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/deskripsi_reg"
@@ -199,11 +202,11 @@
             android:layout_marginTop="12dp"
             android:hint="@string/travel_preferences"
             android:fontFamily="@font/inter_regular"
-            app:boxStrokeWidth="0dp"
             app:layout_constraintTop_toBottomOf="@+id/city_input_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:startIconContentDescription="Username"
+            app:boxBackgroundColor="?android:attr/windowBackground"
             >
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView

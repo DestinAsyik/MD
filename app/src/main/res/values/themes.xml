@@ -14,9 +14,9 @@
         <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
 
         <!-- Background colors -->
-        <item name="android:colorBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/white</item>
         <item name="colorOnBackground">@color/on_background_light</item>
-        <item name="colorSurface">@color/background_light</item>
+        <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/on_background_light</item>
 
         <!-- Status bar and Navigation bar -->
@@ -28,8 +28,6 @@
         <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
         <item name="materialCardViewStyle">@style/Widget.Material3.CardView.Elevated</item>
     </style>
-
-    <style name="Theme.DestinAsyik" parent="Base.Theme.DestinAsyik" />
 
     <style name="Tittle.DestinAsyik" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/poppins_bold</item>
