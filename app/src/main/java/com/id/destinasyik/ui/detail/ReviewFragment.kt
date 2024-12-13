@@ -23,6 +23,7 @@ import com.id.destinasyik.databinding.FragmentPricingBinding
 import com.id.destinasyik.databinding.FragmentReviewBinding
 import com.id.destinasyik.model.MainViewModel
 import com.id.destinasyik.ui.recomended.RecommendedAdapter
+import java.util.Locale
 
 
 class ReviewFragment : Fragment() {
@@ -69,14 +70,16 @@ class ReviewFragment : Fragment() {
             }
             Log.d("TOTAL RATING","$totalRating")
             val averageRating = totalRating.div(totalReviews)
-            binding.ratingText.text=averageRating.toString()
+            Log.d("TOTAL RATING","$averageRating")
+            val rating = String.format( "%.2f", averageRating)
+            binding.ratingText.text=rating
             binding.tvRating.rating=averageRating
             binding.totalReview.text="( $totalReviews )"
-            binding.oneStarBar.progress= ratingCount[1]?.let { calculatePrecentage(it, totalReviews) }!!
-            binding.twoStarBar.progress= ratingCount[2]?.let { calculatePrecentage(it, totalReviews) }!!
-            binding.threeStarBar.progress= ratingCount[3]?.let { calculatePrecentage(it, totalReviews) }!!
-            binding.fourStarBar.progress= ratingCount[4]?.let { calculatePrecentage(it, totalReviews) }!!
-            binding.fiveStarBar.progress= ratingCount[5]?.let { calculatePrecentage(it, totalReviews) }!!
+            binding.oneStarBar.progress= ratingCount[1]?.let { calculatePrecentage(it, totalReviews) }!!.toInt()
+            binding.twoStarBar.progress= ratingCount[2]?.let { calculatePrecentage(it, totalReviews) }!!.toInt()
+            binding.threeStarBar.progress= ratingCount[3]?.let { calculatePrecentage(it, totalReviews) }!!.toInt()
+            binding.fourStarBar.progress= ratingCount[4]?.let { calculatePrecentage(it, totalReviews) }!!.toInt()
+            binding.fiveStarBar.progress= ratingCount[5]?.let { calculatePrecentage(it, totalReviews) }!!.toInt()
         }
         binding.btnSendReview.setOnClickListener {
             val rating = binding.inputRating.rating
@@ -105,8 +108,8 @@ class ReviewFragment : Fragment() {
         }
     }
 
-    private fun calculatePrecentage(count: Int, total: Int): Int{
-        val precentage = count.div(total)*100
+    private fun calculatePrecentage(count: Int, total: Int): Float{
+        val precentage = count.toFloat().div(total.toFloat())*100
         return precentage
     }
 
